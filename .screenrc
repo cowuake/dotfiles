@@ -1,0 +1,5 @@
+autodetach on
+startup_message off
+hardstatus alwayslastline
+shelltitle 'rmura'
+escape ^Bb
