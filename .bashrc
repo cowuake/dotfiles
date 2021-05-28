@@ -251,8 +251,10 @@ alias anaconda2-update-consistent="conda2 update anaconda"
 alias anaconda3-update-consistent="conda3 update anaconda"
 alias anaconda2-update-newest="conda2 update conda && conda2 update --all"
 alias anaconda3-update-newest="conda3 update conda && conda3 update --all"
-alias rsync="rsync --info=progress2 --no-i-r"
-alias remotesync="rsync -az --info=progress2 --no-i-r"
+alias rsync="/usr/bin/env rsync --info=progress2 --no-i-r"
+alias remotesync="/usr/bin/env rsync -az --info=progress2 --no-i-r"
+alias rsync-old="/usr/bin/env rsync --no-i-r"
+alias remotesync-old="rsync-old -az --no-i-r"
 alias space="du -h --max-depth=1 | sort -h"
 alias feh="feh --scale-down --auto-zoom"
 alias quake2="$HOME/gitClones/yquake2/release/quake2"
@@ -265,6 +267,8 @@ alias t="tmux"
 alias ta="tmux attach-session"
 alias v="sudo vpnc"
 alias vd="sudo vpnc-disconnect"
+
+alias ff="FreeFem++-mpi_openmpi"
 
 alias generate-ssh-key="ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/id_ed25519"
 
@@ -289,6 +293,9 @@ alias update-firmwares="fwupdmgr get-devices && fwupdmgr refresh --force && fwup
 alias gnome-internal-keyboard="gsettings set org.gnome.desktop.input-sources xkb-options \"['lv3:ralt_switch', 'altwin:swap_alt_win', 'compose:ralt', 'ctrl:swapcaps_hyper']\""
 alias gnome-external-keyboard="gsettings set org.gnome.desktop.input-sources xkb-options \"['compose:ralt']\""
 
+alias gc="git commit"
+alias gin="git pull"
+alias gout="git push"
 alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
 
 SU2_PREFIX=$HOME
@@ -323,3 +330,10 @@ if [[ -f "/etc/os-release" && on-fedora ]]; then
       | grep -v '^\(kernel-modules\|kernel\|kernel-core\|kernel-devel\)$'"
     alias fedora-my-repositories="dnf repolist enabled"
 fi
+
+
+alias rhel-awake-subscription="sudo subscription-manager remove --all; \
+      		   	       sudo subscription-manager unregister; \
+			       sudo subscription-manager clean; \
+			       sudo subscription-manager register; \
+			       sudo subscription-manager attach --auto"
