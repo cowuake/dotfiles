@@ -33,7 +33,7 @@
 ;; ==========================================
 
 ;; ====== GARBAGE COLLECTOR ======
-;; NOTE:: This is changeg at the end of the config
+;; NOTE:: This is changed at the end of the config
 (setq gc-cons-threshold (* 512 1024 1024))
 (setq gc-cons-percentage 0.6)
 

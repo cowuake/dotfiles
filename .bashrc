@@ -114,6 +114,7 @@ else
 fi
 
 PATH=$HOME/bin:$PATH # Personal executable scripts
+PATH=$HOME/.julia/bin:$PATH # Julia binaries
 OPENMPI_INSTALL_DIR=/usr/lib64/openmpi
 MPICH_INSTALL_DIR=/usr/lib64/mpich
 PATH=/usr/lib64/openmpi/bin:$PATH # OPENMPI binaries, e.g., mpicc, mpicxx
@@ -231,11 +232,14 @@ alias e="emacsclient"
 alias ewe="emacs --daemon"
 alias ee="emacsclient -nw"
 alias et="emacs -nw"
+alias o="xdg-open"
+alias open="xdg-open"
 alias gp="gnuplot"
 alias sc="screen"
 alias bibmerge="bibtool -s -d"
 alias mytop="top -u $USER"
 alias myhtop="htop -u $USER"
+alias tf="tail -f"
 alias h="htop"
 alias d="cd ~/Downloads"
 alias r="cd ~/gitRepos"
@@ -299,10 +303,10 @@ alias gout="git push"
 alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
 
 SU2_PREFIX=$HOME
-alias su2-build="./meson.py build --buildtype=release --prefix=$SU2_PREFIX && ./ninja -C build install"
-alias su2-build-debug="./meson.py build --buildtype=debug --prefix=$SU2_PREFIX && ./ninja -C build install"
-alias su2-rebuild="./meson.py build --reconfigure --buildtype=release --prefix=$SU2_PREFIX && ./ninja -C build install"
-alias su2-rebuild-debug="./meson.py build --reconfigure --buildtype=debug --prefix=$SU2_PREFIX && ./ninja -C build install"
+alias su2-build="./meson.py build --buildtype=release -Dwith-omp=true --prefix=$SU2_PREFIX && ./ninja -C build install"
+alias su2-build-debug="./meson.py build --buildtype=debug -Dwith-omp=true --prefix=$SU2_PREFIX && ./ninja -C build install"
+alias su2-rebuild="./meson.py build --reconfigure --buildtype=release -Dwith-omp=true --prefix=$SU2_PREFIX && ./ninja -C build install"
+alias su2-rebuild-debug="./meson.py build --reconfigure --buildtype=debug -Dwith-omp=true --prefix=$SU2_PREFIX && ./ninja -C build install"
 
 
 # ===========================================================
