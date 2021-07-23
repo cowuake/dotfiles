@@ -308,6 +308,8 @@ alias su2-build-debug="./meson.py build --buildtype=debug -Dwith-omp=true --pref
 alias su2-rebuild="./meson.py build --reconfigure --buildtype=release -Dwith-omp=true --prefix=$SU2_PREFIX && ./ninja -C build install"
 alias su2-rebuild-debug="./meson.py build --reconfigure --buildtype=debug -Dwith-omp=true --prefix=$SU2_PREFIX && ./ninja -C build install"
 
+alias su2-clean-dir="find ./* -type f -not -name '*.cfg' -not -name '*.su2' -not -name '*.sl' -delete"
+
 
 # ===========================================================
 # ====== PERL ONE-LINERS (I.E., ADDITIONAL ALIASES...) ======
@@ -315,6 +317,98 @@ alias su2-rebuild-debug="./meson.py build --reconfigure --buildtype=debug -Dwith
 
 # Not escaped version: perl -e 'rename$_,y/ /_/drfor<"* *">'
 alias adjust-filenames="perl -e 'rename\$_,y/ /_/drfor<\"* *\">'"
+
+
+# ====================================
+# ====== SU2 / SLURM FACILITIES ======
+# ====================================
+
+SLURM_SBATCH_EXT=".sl"
+SLURM_JOB_NAME_ROOT="slurmjob"
+alias slurm-launch-all='for file in $(find . -type f -name "*$SLURM_SBATCH_EXT"); \
+      			    do sbatch "$file"; done'
+alias slurm-kill-all='for file in $(find . -type f -name "$SLURM_JOB_NAME_ROOT*"); \
+      	       		  do scancel $(echo $file | tr -d -c 0-9); done'
+
+function slurm-launch-su2() {
+    if [[ $1 == "" ]]; then
+	echo "You must specify at least the job name."
+	return
+    fi
+
+    if [[ $2 == "" ]]; then
+	echo "file '$2' does not exist."
+	return
+    fi
+
+    JOBNAME=$1
+    CFG_FILE=$2
+    PARALLEL_OPTION=$3
+    MPI_OPTIONS=$6
+
+    AVAILABLE_CORES=$(cat /proc/cpuinfo | grep -m 1 "cpu cores" | awk '{print $4}')
+    TOTAL_THREADS=$(nproc --all)
+    THREADS_PER_CORE=$(echo "$TOTAL_THREADS / $AVAILABLE_CORES" | bc)
+
+    if [[ $PARALLEL_OPTION == "" ]]; then
+	#echo "No parallelization option specified. Using pure MPI."
+	N_CORES=$AVAILABLE_CORES
+	N_THREADS=1
+	PARALLEL_OPTION=MPI
+    elif [[ ${PARALLEL_OPTION,,} == "mpi" ]]; then
+	#echo "Using pure MPI"
+	N_CORES=$AVAILABLE_CORES
+	N_THREADS=1
+    elif [[ ${PARALLEL_OPTION,,} == "threading" ]]; then
+	#echo "Using multithreading only (OpenMP)."
+	N_CORES=1
+	N_THREADS=$TOTAL_THREADS
+    elif [[ ${PARALLEL_OPTION,,} == "hybrid" ]]; then
+	#echo "Using the hybrid approach (MPI + OpenMP)"
+	N_CORES=$AVAILABLE_CORES
+	N_THREADS=$THREADS_PER_CORE
+    elif [[ ${PARALLEL_OPTION,,} == "custom" ]]; then
+	N_CORES=$4
+	N_THREADS=$5
+    else
+	echo "No valid parallelization option specified."
+	return
+    fi
+
+    echo "SLURM jobname: $1"
+    echo "SU2 config file: $2"
+    echo "Parallelization strategy: $PARALLEL_OPTION"
+    echo "The job will be launched with $N_CORES processes and$ $N_THREADS threads per process"
+
+    HOST=$(hostname)
+    FILE=auto_job.sl
+    rm $FILE ; touch $FILE
+
+    TEXT=$(cat <<EOF
+#!/usr/bin/env bash
+
+#SBATCH --job-name=$JOBNAME
+#SBATCH --nodes=1
+#SBATCH --nodelist=$HOST
+#SBATCH --output slurmjob-%j.out
+#SBATCH --error slurmjob-%j.err
+
+export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:\$LD_LIBRARY_PATH
+
+date > begin_time.txt
+mpirun $MPI_OPTIONS -n $N_CORES SU2_CFD -t $N_THREADS $CFG_FILE
+date > end_time.txt
+EOF
+    )
+    echo "$TEXT" > $FILE
+    echo "$TEXT"
+    sbatch $FILE
+}
+
+function slurm-launch-su2-mpi() { slurm-launch-su2 $1 $2 "mpi" ; }
+function slurm-launch-su2-hybrid() { slurm-launch-su2 $1 $2 "hybrid" ; }
+function slurm-launch-su2-threading() { slurm-launch-su2 $1 $2 "threading" ; }
+function slurm-launch-su2-custom() { slurm-launch-su2 $1 $2 "custom" $3 $4 $5 ; }
 
 
 # ============================================================
