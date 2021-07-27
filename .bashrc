@@ -101,6 +101,16 @@ PS1+="$_reset\$ "
 # ====== ENVIRONMENT ======
 # =========================
 
+### GIT
+GIT_REPOS_DIR=$HOME/gitRepos
+GIT_CLONES_DIR=$HOME/gitClones
+
+### MACHINE RESOURCES
+CPU_CORES=$(cat /proc/cpuinfo | grep -m 1 "cpu cores" | awk '{print $4}')
+CPU_THREADS=$(nproc --all)
+CPU_THREADS_PER_CORE=$(echo "$CPU_THREADS / $CPU_CORES" | bc)
+
+### TEXT EDITOR
 if [ -f "/usr/bin/emacs" ]; then
     if ps -aux | grep "emacs  --daemon" > /dev/null 2>&1; then
 	EDITOR=emacsclient
@@ -113,6 +123,7 @@ else
     fi
 fi
 
+### ADDITIONAL EXECUTABLES
 PATH=$HOME/bin:$PATH # Personal executable scripts
 PATH=$HOME/.julia/bin:$PATH # Julia binaries
 OPENMPI_INSTALL_DIR=/usr/lib64/openmpi
@@ -120,26 +131,19 @@ MPICH_INSTALL_DIR=/usr/lib64/mpich
 PATH=/usr/lib64/openmpi/bin:$PATH # OPENMPI binaries, e.g., mpicc, mpicxx
 PATH=/usr/lib64/mpich/bin:$PATH # MPICH binaries, e.g., mpicc, mpicxx
 
-# Matlab
+### MATLAB
 PATH=$HOME/MATLAB/R2020b/bin:$PATH
 
 # refine by NASA
-PATH=$HOME/gitClones/refine/build/bin:$PATH
+PATH=$GIT_CLONES_DIR/refine/build/bin:$PATH
 
-# Julia threads
-export JULIA_NUM_THREADS=$(echo "$(nproc --all) / 2" | bc)
+### JULIA
+export JULIA_NUM_THREADS=$CPU_CORES
 
 
 # ==============================
 # ====== USEFUL FUNCTIONS ======
 # ==============================
-
-function su2-here() {
-    export SU2_RUN=$(pwd)/bin
-    export SU2_HOME=$(pwd)
-    export PATH=$PATH:$SU2_RUN
-    export PYTHONPATH=$SU2_RUN:$PYTHONPATH
-}
 
 function on-classic-linux() {
     if [[ -f "/etc/os-release" ]]; then
@@ -242,8 +246,8 @@ alias myhtop="htop -u $USER"
 alias tf="tail -f"
 alias h="htop"
 alias d="cd ~/Downloads"
-alias r="cd ~/gitRepos"
-alias c="cd ~/gitClones"
+alias r="cd $GIT_REPOS_DIR"
+alias c="cd $GIT_CLONES_DIR"
 #alias julia='julia --threads $(echo "$(nproc --all) / 2" | bc)'
 #alias julia="julia -p $(echo "$(nproc --all) / 2" | bc)"
 alias mesh="~/gitRepos/SU2_functionalUtilities/mesh.jl"
@@ -261,8 +265,8 @@ alias rsync-old="/usr/bin/env rsync --no-i-r"
 alias remotesync-old="rsync-old -az --no-i-r"
 alias space="du -h --max-depth=1 | sort -h"
 alias feh="feh --scale-down --auto-zoom"
-alias quake2="$HOME/gitClones/yquake2/release/quake2"
-alias quake3="$HOME/gitClones/ioq3/build/release-linux-x86_64/ioquake3.x86_64"
+alias quake2="$GIT_CLONES_DIR/yquake2/release/quake2"
+alias quake3="$GIT_CLONES_DIR/ioq3/build/release-linux-x86_64/ioquake3.x86_64"
 alias matlab="matlab & disown matlab"
 alias matlabcli="matlab -nodesktop -nosplash"
 alias vi="vim"
@@ -302,14 +306,6 @@ alias gin="git pull"
 alias gout="git push"
 alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
 
-SU2_PREFIX=$HOME
-alias su2-build="./meson.py build --buildtype=release -Dwith-omp=true --prefix=$SU2_PREFIX && ./ninja -C build install"
-alias su2-build-debug="./meson.py build --buildtype=debug -Dwith-omp=true --prefix=$SU2_PREFIX && ./ninja -C build install"
-alias su2-rebuild="./meson.py build --reconfigure --buildtype=release -Dwith-omp=true --prefix=$SU2_PREFIX && ./ninja -C build install"
-alias su2-rebuild-debug="./meson.py build --reconfigure --buildtype=debug -Dwith-omp=true --prefix=$SU2_PREFIX && ./ninja -C build install"
-
-alias su2-clean-dir="find ./* -type f -not -name '*.cfg' -not -name '*.su2' -not -name '*.sl' -delete"
-
 
 # ===========================================================
 # ====== PERL ONE-LINERS (I.E., ADDITIONAL ALIASES...) ======
@@ -322,6 +318,13 @@ alias adjust-filenames="perl -e 'rename\$_,y/ /_/drfor<\"* *\">'"
 # ====================================
 # ====== SU2 / SLURM FACILITIES ======
 # ====================================
+
+#function su2-here() {
+#    export SU2_RUN=$(pwd)/bin
+#    export SU2_HOME=$(pwd)
+#    export PATH=$PATH:$SU2_RUN
+#    export PYTHONPATH=$SU2_RUN:$PYTHONPATH
+#}
 
 SLURM_SBATCH_EXT=".sl"
 SLURM_JOB_NAME_ROOT="slurmjob"
@@ -346,27 +349,23 @@ function slurm-launch-su2() {
     PARALLEL_OPTION=$3
     MPI_OPTIONS=$6
 
-    AVAILABLE_CORES=$(cat /proc/cpuinfo | grep -m 1 "cpu cores" | awk '{print $4}')
-    TOTAL_THREADS=$(nproc --all)
-    THREADS_PER_CORE=$(echo "$TOTAL_THREADS / $AVAILABLE_CORES" | bc)
-
     if [[ $PARALLEL_OPTION == "" ]]; then
 	#echo "No parallelization option specified. Using pure MPI."
-	N_CORES=$AVAILABLE_CORES
+	N_CORES=$CPU_CORES
 	N_THREADS=1
 	PARALLEL_OPTION=MPI
     elif [[ ${PARALLEL_OPTION,,} == "mpi" ]]; then
 	#echo "Using pure MPI"
-	N_CORES=$AVAILABLE_CORES
+	N_CORES=$CPU_CORES
 	N_THREADS=1
     elif [[ ${PARALLEL_OPTION,,} == "threading" ]]; then
 	#echo "Using multithreading only (OpenMP)."
 	N_CORES=1
-	N_THREADS=$TOTAL_THREADS
+	N_THREADS=$CPU_THREADS
     elif [[ ${PARALLEL_OPTION,,} == "hybrid" ]]; then
 	#echo "Using the hybrid approach (MPI + OpenMP)"
-	N_CORES=$AVAILABLE_CORES
-	N_THREADS=$THREADS_PER_CORE
+	N_CORES=$CPU_CORES
+	N_THREADS=$CPU_THREADS_PER_CORE
     elif [[ ${PARALLEL_OPTION,,} == "custom" ]]; then
 	N_CORES=$4
 	N_THREADS=$5
@@ -395,9 +394,9 @@ function slurm-launch-su2() {
 
 export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:\$LD_LIBRARY_PATH
 
-date > begin_time.txt
+date > time_begin.txt
 mpirun $MPI_OPTIONS -n $N_CORES SU2_CFD -t $N_THREADS $CFG_FILE
-date > end_time.txt
+date > time_end.txt
 EOF
     )
     echo "$TEXT" > $FILE
@@ -409,6 +408,49 @@ function slurm-launch-su2-mpi() { slurm-launch-su2 $1 $2 "mpi" ; }
 function slurm-launch-su2-hybrid() { slurm-launch-su2 $1 $2 "hybrid" ; }
 function slurm-launch-su2-threading() { slurm-launch-su2 $1 $2 "threading" ; }
 function slurm-launch-su2-custom() { slurm-launch-su2 $1 $2 "custom" $3 $4 $5 ; }
+
+function slurm-dummy-job() {
+    HOST=$(hostname)
+    JOBNAME="DUMMY_$HOST"
+    FILE=~/dummy_job.sl
+
+    if [[ $1 != "" ]] ; then TIME=$1 ; else TIME=2d ; fi
+    if [ -f $FILE ] ; then rm $FILE ; fi ; touch $FILE
+
+    TEMP=$(squeue | grep DUMMY_ )
+    if [[ $TEMP != "" ]]; then scancel $(echo $TEMP | awk '{print $1}') ; fi
+
+    TEXT=$(cat <<EOF
+#!/bin/bash
+#
+#SBATCH --job-name=$JOBNAME
+#SBATCH -N 1
+#SBATCH --nodelist=$HOST
+#SBATCH --exclusive
+#
+sleep 2d
+EOF
+    )
+    echo "$TEXT" > $FILE
+
+    sbatch $FILE
+}
+
+SU2_PREFIX=$HOME
+
+alias su2-build="./meson.py build --buildtype=release -Dwith-omp=true \
+      --prefix=$SU2_PREFIX && ./ninja -C build install"
+
+alias su2-build-debug="./meson.py build --buildtype=debug -Dwith-omp=true \
+      --prefix=$SU2_PREFIX && ./ninja -C build install"
+
+alias su2-rebuild="./meson.py build --reconfigure --buildtype=release -Dwith-omp=true \
+      --prefix=$SU2_PREFIX && ./ninja -C build install"
+
+alias su2-rebuild-debug="./meson.py build --reconfigure --buildtype=debug -Dwith-omp=true \
+      --prefix=$SU2_PREFIX && ./ninja -C build install"
+
+alias su2-clean-dir="find ./* -type f -not -name '*.cfg' -not -name '*.su2' -not -name '*.sl' -delete"
 
 
 # ============================================================
