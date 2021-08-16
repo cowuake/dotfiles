@@ -488,6 +488,14 @@ There are two things you can do about this warning:
   )
 
 
+;; =========================
+;; ======= VIMRC MODE ======
+;; =========================
+(use-package vimrc-mode
+  :ensure t
+  )
+
+
 ;; =============================================================================
 ;; ====== APDL-MODE (major mode for the ANSYS Parametric Design Language) ======
 ;; =============================================================================
@@ -527,6 +535,14 @@ There are two things you can do about this warning:
 		     :nickserv-nick "rmura"
 		     :nickserv-password my-nickserv-password
 		     :realname "Riccardo Mura"))))
+  )
+
+
+;; =======================
+;; ====== DIFFVIEW  ======
+;; =======================
+(use-package diffview
+  :ensure t
   )
 
 
@@ -788,6 +804,10 @@ There are two things you can do about this warning:
 (use-package magit
   :ensure t
   :bind ("C-x g" . 'magit-status)
+  )
+;; NOTE: magit-diff-range for diffs between branches
+(use-package magit-delta
+  :ensure t
   )
 
 
@@ -1107,7 +1127,7 @@ There are two things you can do about this warning:
  '(custom-safe-themes
    '("4eb6fa2ee436e943b168a0cd8eab11afc0752aebb5d974bba2b2ddc8910fca8f" "6b5c518d1c250a8ce17463b7e435e9e20faa84f3f7defba8b579d4f5925f60c1" "d14f3df28603e9517eb8fb7518b662d653b25b26e83bd8e129acea042b774298" "e3a1b1fb50e3908e80514de38acbac74be2eb2777fc896e44b54ce44308e5330" "b02eae4d22362a941751f690032ea30c7c78d8ca8a1212fdae9eecad28a3587f" "b6269b0356ed8d9ed55b0dcea10b4e13227b89fd2af4452eee19ac88297b0f99" "fb83a50c80de36f23aea5919e50e1bccd565ca5bb646af95729dc8c5f926cbf3" "b89a4f5916c29a235d0600ad5a0849b1c50fab16c2c518e1d98f0412367e7f97" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "36ca8f60565af20ef4f30783aa16a26d96c02df7b4e54e9900a5138fb33808da" "c8b83e7692e77f3e2e46c08177b673da6e41b307805cd1982da9e2ea2e90e6d7" "24168c7e083ca0bbc87c68d3139ef39f072488703dcdd82343b8cab71c0f62a7" default))
  '(package-selected-packages
-   '(gnuplot-mode gnuplot haskell-mode cyberpunk-theme color-theme-sanityinc-tomorrow ample-theme monokai-pro-theme tiny use-package telega rainbow-delimiters quick-preview python-black poly-ansible pdf-tools ox-latex-subfigure org-bullets nov multiple-cursors multi-vterm multi-term meson-mode magit latex-math-preview key-chord julia-mode irony-eldoc hydra htmlize helm-bibtex gruvbox-theme geiser flycheck-irony elpy doom-modeline dired-sidebar counsel-projectile company-irony-c-headers company-irony company-c-headers company-ansible cmake-ide circe auto-complete-auctex auctex-latexmk apdl-mode)))
+   '(magit-delta vimrc-mode gnuplot-mode gnuplot haskell-mode cyberpunk-theme color-theme-sanityinc-tomorrow ample-theme monokai-pro-theme tiny use-package telega rainbow-delimiters quick-preview python-black poly-ansible pdf-tools ox-latex-subfigure org-bullets nov multiple-cursors multi-vterm multi-term meson-mode magit latex-math-preview key-chord julia-mode irony-eldoc hydra htmlize helm-bibtex gruvbox-theme geiser flycheck-irony elpy doom-modeline dired-sidebar counsel-projectile company-irony-c-headers company-irony company-c-headers company-ansible cmake-ide circe auto-complete-auctex auctex-latexmk apdl-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

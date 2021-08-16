@@ -16,12 +16,12 @@
 xrdb ~/.Xresources
 
 # Source global definitions
-if [ -f /etc/bashrc ]; then
+if [ -f /etc/bashrc ] ; then
     . /etc/bashrc
 fi
 
 # Search for additional local content (e.g., company-related stuff)
-if [ -f ~/.addenda ]; then
+if [ -f ~/.addenda ] ; then
     . ~/.addenda
 fi
 
@@ -111,14 +111,14 @@ CPU_THREADS=$(nproc --all)
 CPU_THREADS_PER_CORE=$(echo "$CPU_THREADS / $CPU_CORES" | bc)
 
 ### TEXT EDITOR
-if [ -f "/usr/bin/emacs" ]; then
-    if ps -aux | grep "emacs  --daemon" > /dev/null 2>&1; then
+if [ -f "/usr/bin/emacs" ] ; then
+    if ps -aux | grep "emacs  --daemon" > /dev/null 2>&1 ; then
 	EDITOR=emacsclient
     else
 	EDITOR=EMACS
     fi
 else
-    if [ -f "/usr/bin/vim" ]; then
+    if [ -f "/usr/bin/vim" ] ; then
        EDITO=vim
     fi
 fi
@@ -146,8 +146,8 @@ export JULIA_NUM_THREADS=$CPU_CORES
 # ==============================
 
 function on-classic-linux() {
-    if [[ -f "/etc/os-release" ]]; then
-	if [[ `cat /etc/os-release | grep \^NAME` == *"$1"* ]]; then
+    if [[ -f "/etc/os-release" ]] ; then
+	if [[ `cat /etc/os-release | grep \^NAME` == *"$1"* ]] ; then
 	    return 0
 	else
 	    return 1
@@ -186,28 +186,28 @@ function update-distro() {
     OPTION=$1
     SESSION=UPDATE
 
-    if on-classic-linux; then
-	if on-fedora; then
-	    if [[ $OPTION == "fast" ]]; then
+    if on-classic-linux ; then
+	if on-fedora ; then
+	    if [[ $OPTION == "fast" ]] ; then
 		UPDATE_CMD="sudo dnf upgrade"
 	    else
 		UPDATE_CMD="sudo dnf upgrade --refresh"
 	    fi
-	elif on-debian; then
+	elif on-debian ; then
 	    UPDATE_CMD="sudo apt update && sudo apt upgrade"
-	elif on-tumbleweed; then
-	    if [[ $OPTION == "fast" ]]; then
+	elif on-tumbleweed ; then
+	    if [[ $OPTION == "fast" ]] ; then
 		UPDATE_CMD="sudo zypper dup --allow-vendor-change"
 	    else
 		UPDATE_CMD="sudo zypper refresh && sudo zypper dup --allow-vendor-change"
 	    fi
-	elif on-leap; then
+	elif on-leap ; then
 	    UPDATE_CMD="sudo zypper up"
 	else
 	    echo -e "\n\tCommand not set for the distribution in use.\n"
 	fi
-    elif [[ ! -f "/etc/os-release" ]]; then
-	if on-guix; then
+    elif [[ ! -f "/etc/os-release" ]] ; then
+	if on-guix ; then
 	    UPDATE_CMD="guix pull"
 	else
 	    echo -e "\n\tCommand not set for the distribution in use.\n"
@@ -232,6 +232,7 @@ alias lll="ls -lahSr"
 alias lf="ls -d */"
 alias ..="cd ../"
 alias ...="cd ../../"
+alias ....="cd ../../../"
 alias e="emacsclient"
 alias ewe="emacs --daemon"
 alias ee="emacsclient -nw"
@@ -334,12 +335,12 @@ alias slurm-kill-all='for file in $(find . -type f -name "$SLURM_JOB_NAME_ROOT*"
       	       		  do scancel $(echo $file | tr -d -c 0-9); done'
 
 function slurm-launch-su2() {
-    if [[ $1 == "" ]]; then
+    if [[ $1 == "" ]] ; then
 	echo "You must specify at least the job name."
 	return
     fi
 
-    if [[ $2 == "" ]]; then
+    if [[ $2 == "" ]] ; then
 	echo "file '$2' does not exist."
 	return
     fi
@@ -349,24 +350,24 @@ function slurm-launch-su2() {
     PARALLEL_OPTION=$3
     MPI_OPTIONS=$6
 
-    if [[ $PARALLEL_OPTION == "" ]]; then
+    if [[ $PARALLEL_OPTION == "" ]] ; then
 	#echo "No parallelization option specified. Using pure MPI."
 	N_CORES=$CPU_CORES
 	N_THREADS=1
 	PARALLEL_OPTION=MPI
-    elif [[ ${PARALLEL_OPTION,,} == "mpi" ]]; then
+    elif [[ ${PARALLEL_OPTION,,} == "mpi" ]] ; then
 	#echo "Using pure MPI"
 	N_CORES=$CPU_CORES
 	N_THREADS=1
-    elif [[ ${PARALLEL_OPTION,,} == "threading" ]]; then
+    elif [[ ${PARALLEL_OPTION,,} == "threading" ]] ; then
 	#echo "Using multithreading only (OpenMP)."
 	N_CORES=1
 	N_THREADS=$CPU_THREADS
-    elif [[ ${PARALLEL_OPTION,,} == "hybrid" ]]; then
+    elif [[ ${PARALLEL_OPTION,,} == "hybrid" ]] ; then
 	#echo "Using the hybrid approach (MPI + OpenMP)"
 	N_CORES=$CPU_CORES
 	N_THREADS=$CPU_THREADS_PER_CORE
-    elif [[ ${PARALLEL_OPTION,,} == "custom" ]]; then
+    elif [[ ${PARALLEL_OPTION,,} == "custom" ]] ; then
 	N_CORES=$4
 	N_THREADS=$5
     else
@@ -400,7 +401,7 @@ date > time_end.txt
 EOF
     )
     echo "$TEXT" > $FILE
-    echo "$TEXT"
+    #echo "$TEXT"
     sbatch $FILE
 }
 
@@ -417,8 +418,9 @@ function slurm-dummy-job() {
     if [[ $1 != "" ]] ; then TIME=$1 ; else TIME=2d ; fi
     if [ -f $FILE ] ; then rm $FILE ; fi ; touch $FILE
 
-    TEMP=$(squeue | grep DUMMY_ )
-    if [[ $TEMP != "" ]]; then scancel $(echo $TEMP | awk '{print $1}') ; fi
+    # Only print job IDs and names, with a reasonable formatting to stay on the safe side
+    TEMP=$(squeue --format="%.10i  %30j" | grep $JOBNAME)
+    if [[ $TEMP != "" ]] ; then scancel $(echo $TEMP | awk '{print $1}') ; fi
 
     TEXT=$(cat <<EOF
 #!/bin/bash
@@ -436,6 +438,20 @@ EOF
     sbatch $FILE
 }
 
+function slurm-dummy-job-remote() {
+    HOSTNAME=$1
+    if [[ $HOSTNAME != "" ]] ; then
+	if ssh $USER@$HOSTNAME "$(typeset -f slurm-dummy-job); slurm-dummy-job" ; then
+	    echo "Command submitted to host $HOSTNAME"
+	else
+	    echo "Impossibile to reach host $HOSTNAME"
+	fi
+    fi
+}
+
+### Better formatting for squeue output
+alias squeue="squeue --format='%.10i %.10P %20j %10u %.10T %.10M %20N'"
+
 SU2_PREFIX=$HOME
 
 alias su2-build="./meson.py build --buildtype=release -Dwith-omp=true \
@@ -451,13 +467,14 @@ alias su2-rebuild-debug="./meson.py build --reconfigure --buildtype=debug -Dwith
       --prefix=$SU2_PREFIX && ./ninja -C build install"
 
 alias su2-clean-dir="find ./* -type f -not -name '*.cfg' -not -name '*.su2' -not -name '*.sl' -delete"
+alias su2-wipe-build="./meson.py setup --wipe build/"
 
 
 # ============================================================
 # ====== FEDORA ADDITIONS (I.E., ADDITIONAL ALIASES...) ======
 # ============================================================
 
-if [[ -f "/etc/os-release" && on-fedora ]]; then
+if [[ -f "/etc/os-release" && on-fedora ]] ; then
     alias fedora-dnf-reset="sudo dnf clean all && sudo dnf makecache --refresh -v"
     alias fedora-enable-chez-scheme="sudo dnf copr enable superboum/chez-scheme"
     alias fedora-enable-tdlib-fresh="sudo dnf copr enable carlis/tdlib-fresh"
