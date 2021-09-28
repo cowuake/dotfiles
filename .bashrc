@@ -242,6 +242,7 @@ alias open="xdg-open"
 alias gp="gnuplot"
 alias sc="screen"
 alias bibmerge="bibtool -s -d"
+alias temp="sensors"
 alias mytop="top -u $USER"
 alias myhtop="htop -u $USER"
 alias tf="tail -f"
@@ -301,6 +302,8 @@ alias update-firmwares="fwupdmgr get-devices && fwupdmgr refresh --force && fwup
 
 alias gnome-internal-keyboard="gsettings set org.gnome.desktop.input-sources xkb-options \"['lv3:ralt_switch', 'altwin:swap_alt_win', 'compose:ralt', 'ctrl:swapcaps_hyper']\""
 alias gnome-external-keyboard="gsettings set org.gnome.desktop.input-sources xkb-options \"['compose:ralt']\""
+
+alias reboot="systemctl reboot"
 
 alias gc="git commit"
 alias gin="git pull"

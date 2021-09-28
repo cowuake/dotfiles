@@ -52,7 +52,7 @@
 (setq font-windows-fallback "Lucida Console")
 
 ;; ====== COLOR THEME ======
-(setq theme-dark 'monokai-pro-spectrum)
+(setq theme-dark 'monokai-pro-octagon)
 ;(setq theme-light 'sanityinc-tomorrow-day)
 (setq theme-light 'gruvbox-light-medium)
 
@@ -90,10 +90,17 @@
 ;; ====== AVOID YASNIPPET LOADING AT STARTUP ======
 ;;(setq package-load-list '((yasnippet nil) all))
 
+(add-hook 'server-switch-hook #'raise-frame)
+					;(add-hook 'server-switch-hook (lambda () (select-frame-set-input-focus (selected-frame))))
 
+(setq custom-file (concat user-emacs-directory "/custom.el"))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ==================================
 ;; ====== FUNCTION DEFINITIONS ======
 ;; ==================================
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun OTF (process name)
   "execute a process in a new terminal session on the fly
@@ -107,7 +114,8 @@ or switch to the buffer if it already exists"
       (vterm-send-string process)
       (execute-kbd-macro (kbd "<return>")))))
 
-;; See https://www.emacswiki.org/emacs/RecreateScratchBuffer
+;;;; SEE:
+;; https://www.emacswiki.org/emacs/RecreateScratchBuffer
 (defun create-scratch-buffer nil
   "create a scratch buffer"
   (interactive)
@@ -183,7 +191,8 @@ or switch to the buffer if it already exists"
       (kill-current-buffer)
     (kill-buffer-and-window)))
 
-;; See https://www.reddit.com/r/emacs/comments/idz35e/emacs_27_can_take_svg_screenshots_of_itself/
+;;;; SEE:
+;; https://www.reddit.com/r/emacs/comments/idz35e/emacs_27_can_take_svg_screenshots_of_itself/
 (if (>= emacs-major-version 27)
     (progn
       (defun screenshot-svg ()
@@ -199,14 +208,11 @@ or switch to the buffer if it already exists"
   nil)
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ===============================
 ;; ====== MACRO DEFINITIONS ======
 ;; ===============================
-
-;(defmacro bind-OTF (process name)
-;  `(lambda ()
-;     (interactive)
-;     (OTF ,process ,name)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmacro bind-with-args (f &rest args)
   `(lambda ()
@@ -275,7 +281,7 @@ or switch to the buffer if it already exists"
 
 ;;;; Suppress unused interface components
 ;(toggle-scroll-bar -1); Disable the scrollbar
-;(menu-bar-mode -1); Disable the menu bar
+(menu-bar-mode -1); Disable the menu bar
 (setq inhibit-splash-screen t); Disable splash screen
 (setq initial-scratch-message nil); Returns empty scratch buffer
 (tool-bar-mode -1); Disable the toolbar
@@ -340,8 +346,8 @@ or switch to the buffer if it already exists"
 
 
 ;; ====== BUFFERS ======
-;; See:
-;;;; https://unix.stackexchange.com/questions/19874/prevent-unwanted-buffers-from-opening/152151#152151
+;;;; SEE:
+;; https://unix.stackexchange.com/questions/19874/prevent-unwanted-buffers-from-opening/152151#152151
 ;;;;;; Removes *messages* from the buffer.
 ;(setq-default message-log-max nil)
 ;(kill-buffer "*Messages*")
@@ -429,122 +435,19 @@ There are two things you can do about this warning:
 (eval-when-compile (require 'use-package))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ==================================
-;; ====== PER-PACKAGE SETTINGS ======
-;; ==================================
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; ===========================
-;; ====== DOOM-MODELINE ======
-;; ===========================
-
-(use-package doom-modeline
-  :ensure t
-  :ensure all-the-icons
-  ;:config (all-the-icons-install-fonts)
-  :custom ((doom-modeline-buffer-encoding t)
-	   (doom-modeline-env-version t)
-	   ;(doom-modeline-icon (display-graphic-p))
-	   (doom-modeline-icon t)
-	   (doom-modeline-irc t)
-	   (doom-modeline-minor-modes t)
-	   (inhibit-compacting-font-caches t))
-  :hook (after-init . doom-modeline-mode)
-  )
-
-
-;; ========================================
-;; ====== MONOKAI PRO (COLOR SCHEME) ======
-;; ========================================
-(use-package monokai-pro-theme
-  :ensure t
-  )
-
-
-;; ===============================================
-;; ====== SANITYINC TOMORROW (COLOR SCHEME) ======
-;; ===============================================
-(use-package color-theme-sanityinc-tomorrow
-  :ensure t
-  )
-
-
-;; ====================================
-;; ====== GRUVBOX (COLOR SCHEME) ======
-;; ====================================
-
-(use-package gruvbox-theme
-  :ensure t
-  )
-
-
-;; ===============================
-;; ======= VIEW LARGE FILES ======
-;; ===============================
-(use-package vlf
-  :ensure t
-  :init (require 'vlf-setup)
-  )
-
-
-;; =========================
-;; ======= VIMRC MODE ======
-;; =========================
-(use-package vimrc-mode
-  :ensure t
-  )
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; =============================================
+;; ====== Per-package settings --- CODING ======
+;; =============================================
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; =============================================================================
 ;; ====== APDL-MODE (major mode for the ANSYS Parametric Design Language) ======
 ;; =============================================================================
+
 (use-package apdl-mode
   :ensure t
   )
-
-;; =================================
-;; ====== CIRCE (IRC CLIENT) =======
-;; =================================
-
-;; See: https://github.com/jorgenschaefer/circe/wiki/Configuration
-;; If you're on Fedora Linux, please verify you have gnutls-utils installed!!
-(use-package circe
-  :ensure t
-  ;; machine irc.freenode.net login <user_name> password <user_password> port 6667
-  :config (progn
-	    (setq auth-sources '("~/.authinfo.gpg"))
-	    ;; ==================================================================
-	    (defun my-fetch-password (&rest params)
-					;(require 'auth-source)
-	      (let ((match (car (apply 'auth-source-search params))))
-		(if match
-		    (let ((secret (plist-get match :secret)))
-		      (if (functionp secret)
-			  (funcall secret)
-			secret))
-		  (error "Password not found for %S" params))))
-	    ;; ==================================================================
-	    (defun my-nickserv-password (server)
-	     (my-fetch-password :login "rmura" :machine "irc.freenode.net"))
-	    ;; ==================================================================
-	    (setq circe-network-options
-		  '(("Freenode"
-		     :tls nil
-		     :nick "rmura"
-		     :nickserv-nick "rmura"
-		     :nickserv-password my-nickserv-password
-		     :realname "Riccardo Mura"))))
-  )
-
-
-;; =======================
-;; ====== DIFFVIEW  ======
-;; =======================
-(use-package diffview
-  :ensure t
-  )
-
 
 ;; ===================================
 ;; ====== ELPY (PYTHON COMFORT) ======
@@ -558,6 +461,40 @@ There are two things you can do about this warning:
   )
 
 
+;; ======================================
+;; ====== IRONY (SURVIVING TO C++) ======
+;; ======================================
+;;;; IMPORTANT:
+;; After installing irony and related packages, llvm-config must be present
+;; on the system in order for the command "irony-compile-server" to work.
+;; On Fedora, "dnf provides llvm-config" easily reveals that on this OS the
+;; needed package is called llvm-devel.
+;; Also, clang-libs should be installed (on systems other than Fedora the name
+;; could differ).
+;;;; SEE:
+;; https://parbo.github.io/blog/2016/05/10/configuring-emacs-for-cpp/
+;; https://oremacs.com/2017/03/28/emacs-cpp-ide/
+
+(use-package irony
+  :ensure t
+  :config (defun my-irony-mode-hook ()
+	    (define-key irony-mode-map
+	      [remap completion-at-point] 'counsel-irony)
+	    (define-key irony-mode-map
+	      [remap complete-symbol] 'counsel-irony))
+  :hook ((c++-mode . irony-mode)
+	 (c-mode . irony-mode)
+	 (objc-mode . irony-mode)
+	 (irony-mode . my-irony-mode-hook)
+	 ;; The following hook must not be used on Debian and derivatives such as Ubuntu
+	 ;; because the "irony-server" package takes care of it system-wide rather than per-user
+	 (irony-mode . irony-cdb-autosetup-compile-options)
+	 )
+  :bind ((:map irony-mode-map
+	       ("C-q" . 'counsel-irony)))
+  )
+
+
 ;; ====================
 ;; ====== JULIA  ======
 ;; ====================
@@ -568,20 +505,43 @@ There are two things you can do about this warning:
   )
 
 
-;(use-package julia-repl
-;  :ensure t
-;  :bind ("C-x j" . 'julia-repl)
-;  :init (setenv "JULIA_NUM_THREADS" "6")
-;  :custom (julia-repl-set-terminal-backend 'vterm)
-;  :hook (julia-mode . julia-repl-mode)
-;  )
-
-
 ;; ======================
 ;; ====== HASKELL  ======
 ;; ======================
 
 (use-package haskell-mode
+  :ensure t
+  )
+
+
+;; ===========================
+;; ====== MESON / NINJA ======
+;; ===========================
+
+(use-package meson-mode
+  :ensure t
+  )
+
+
+;; =================================
+;; ====== MAGIT (GIT COMFORT) ======
+;; =================================
+
+(use-package magit
+  :ensure t
+  :bind ("C-x g" . 'magit-status)
+  )
+;; NOTE: magit-diff-range for diffs between branches
+(use-package magit-delta
+  :ensure t
+  )
+
+
+;; ===================
+;; ====== RUST  ======
+;; ===================
+
+(use-package rust-mode
   :ensure t
   )
 
@@ -617,15 +577,11 @@ There are two things you can do about this warning:
 ;	    (eldoc-mode)))
 
 
-;; ==============================
-;; ====== MULTIPLE-CURSORS ======
-;; ==============================
-
-(use-package multiple-cursors
-  :ensure t
-  :bind ("C-c m" . 'mc/edit-lines)
-  )
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; =================================================
+;; ====== Per-package settings --- UTILITIES ======
+;; =================================================
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; ===========================
 ;; ====== AUTO-COMPLETE ======
@@ -638,6 +594,62 @@ There are two things you can do about this warning:
   :config (ac-config-default)
   :config (when (>= emacs-major-version 24)
 	    (global-auto-complete-mode -1))
+  )
+
+
+;; ======================================
+;; ====== AUTOMATIC PACKAGE UPDATE ======
+;; ======================================
+
+;;;; SEE:
+;; https://emacs.stackexchange.com/questions/31826/does-use-package-keep-packages-automatically-updated
+;; https://emacs.stackexchange.com/questions/31872/how-to-update-packages-installed-with-use-package
+
+(use-package auto-package-update
+   :ensure t
+   :config
+   (setq auto-package-update-delete-old-versions t
+         auto-package-update-interval 7) ;; update once a week
+   (auto-package-update-maybe)
+   )
+
+
+;; =================================
+;; ====== CIRCE (IRC CLIENT) =======
+;; =================================
+
+;;;; SEE:
+;; https://github.com/jorgenschaefer/circe/wiki/Configuration
+
+;;;; IMPORTANT:
+;; If you're on Fedora Linux, please verify you have gnutls-utils installed!!
+
+(use-package circe
+  :ensure t
+  ;; machine irc.freenode.net login <user_name> password <user_password> port 6667
+  :config (progn
+	    (setq auth-sources '("~/.authinfo.gpg"))
+	    ;; ==================================================================
+	    (defun my-fetch-password (&rest params)
+					;(require 'auth-source)
+	      (let ((match (car (apply 'auth-source-search params))))
+		(if match
+		    (let ((secret (plist-get match :secret)))
+		      (if (functionp secret)
+			  (funcall secret)
+			secret))
+		  (error "Password not found for %S" params))))
+	    ;; ==================================================================
+	    (defun my-nickserv-password (server)
+	     (my-fetch-password :login "rmura" :machine "irc.freenode.net"))
+	    ;; ==================================================================
+	    (setq circe-network-options
+		  '(("Freenode"
+		     :tls nil
+		     :nick "rmura"
+		     :nickserv-nick "rmura"
+		     :nickserv-password my-nickserv-password
+		     :realname "Riccardo Mura"))))
   )
 
 
@@ -669,54 +681,34 @@ There are two things you can do about this warning:
   )
 
 
-;; =======================================
-;; ====== FLYCHECK (SYNTAX CHECKING)======
-;; =======================================
-;; SEE:
-;;;; https://www.reddit.com/r/emacs/comments/7mjyz8/flycheck_syntax_checking_makes_editing_files/
+;; =====================
+;; ====== COUNSEL ======
+;; =====================
 
-(use-package flycheck
+(use-package counsel
   :ensure t
-  :custom ((flycheck-check-syntax-automatically '(save new-line))
-	   (flycheck-display-errors-delay .9))
-  :hook ((c++-mode . flycheck-mode)
-	 (c-mode . flycheck-mode)
-	 (objc-mode . flycheck-mode)
-	 )
   )
 
 
-;; ========================================
-;; ====== AUCTEX (COMFORT FOR LaTeX) ======
-;; ========================================
+;; ================================
+;; ====== COUNSEL-PROJECTILE ======
+;; ================================
 
-(use-package tex
-  :defer t
-  :ensure auctex :ensure auctex-latexmk
-  :config (progn
-	    (auctex-latexmk-setup)
-	    ;; Update PDF buffers after successful LaTeX runs
-	    (add-hook 'TeX-after-compilation-finished-functions
-		      #'TeX-revert-document-buffer))
-  :custom ((TeX-engine 'xetex)
-	   (reftex-plug-into-AUCTeX t)
-	   (reftex-extra-bindings t); C-c c is enough for citations
-	   (TeX-view-program-selection '((output-pdf "PDF Tools"))); Use pdf-tools to open PDF files
-	   (TeX-source-correlate-start-server t))
-  :hook ((LaTeX-mode turn-on-reftex)
-	 (Tex-mode . flyspell-mode); Enable spell check (not for comments)
-	 (Tex-mode . auto-complete)
-	 (Tex-mode . (lambda() (local-set-key [C-tab] 'TeX-complete-symbol))))
+(use-package counsel-projectile
+  :ensure t
+  :init (counsel-projectile-mode)
+  :bind (:map projectile-mode-map
+	      ("C-c p" . 'projectile-commander))
+  :custom (projectile-use-git-grep 1)
   )
 
 
-;; ===========================
-;; ====== PREVIEW-LATEX ======
-;; ===========================
+;; =======================
+;; ====== DIFFVIEW  ======
+;; =======================
 
-(use-package latex-math-preview
+(use-package diffview
   :ensure t
-  :bind ("C-c e" . 'latex-math-preview-expression); Preview for equations
   )
 
 
@@ -737,86 +729,41 @@ There are two things you can do about this warning:
   )
 
 
-;; ======================================
-;; ====== IRONY (SURVIVING TO C++) ======
-;; ======================================
-;; IMPORTANT:
-;;;; After installing irony and related packages, llvm-config must be present
-;;;; on the system in order for the command "irony-compile-server" to work.
-;;;; On Fedora, "dnf provides llvm-config" easily reveals that on this OS the
-;;;; needed package is called llvm-devel.
-;;;; Also, clang-libs should be installed (on systems other than Fedora the name
-;;;; could differ).
-;; SEE:
-;;;; https://parbo.github.io/blog/2016/05/10/configuring-emacs-for-cpp/
-;;;; https://oremacs.com/2017/03/28/emacs-cpp-ide/
+;; =======================================
+;; ====== FLYCHECK (SYNTAX CHECKING)======
+;; =======================================
 
-(use-package irony
+;;;; SEE:
+;; https://www.reddit.com/r/emacs/comments/7mjyz8/flycheck_syntax_checking_makes_editing_files/
+
+(use-package flycheck
   :ensure t
-  :config (defun my-irony-mode-hook ()
-	    (define-key irony-mode-map
-	      [remap completion-at-point] 'counsel-irony)
-	    (define-key irony-mode-map
-	      [remap complete-symbol] 'counsel-irony))
-  :hook ((c++-mode . irony-mode)
-	 (c-mode . irony-mode)
-	 (objc-mode . irony-mode)
-	 (irony-mode . my-irony-mode-hook)
-	 ;; The following hook must not be used on Debian and derivatives such as Ubuntu
-	 ;; because the "irony-server" package takes care of it system-wide rather than per-user
-	 (irony-mode . irony-cdb-autosetup-compile-options)
+  :custom ((flycheck-check-syntax-automatically '(save new-line))
+	   (flycheck-display-errors-delay .9))
+  :hook ((c++-mode . flycheck-mode)
+	 (c-mode . flycheck-mode)
+	 (objc-mode . flycheck-mode)
 	 )
-  :bind ((:map irony-mode-map
-	       ("C-q" . 'counsel-irony)))
   )
-
-;(use-package cmake-ide
-;  :ensure t
-;  :init
-;  (use-package semantic/bovine/gcc)
-;  (setq cmake-ide-flags-c++ (append '("-std=c++11")
-;				    (mapcar (lambda (path) (concat "-I" path)) (semantic-gcc-get-include-paths "c++"))))
-;  (setq cmake-ide-flags-c (append (mapcar (lambda (path) (concat "-I" path)) (semantic-gcc-get-include-paths "c"))))
-;  (cmake-ide-setup)
-;  )
 
 
 ;; ==========================
 ;; ====== GNUPLOT MODE ======
 ;; ==========================
+
 (use-package gnuplot
   :ensure t
   )
 
 
-;; ===========================
-;; ====== MESON / NINJA ======
-;; ===========================
-(use-package meson-mode
+;; ==============================
+;; ====== MULTIPLE-CURSORS ======
+;; ==============================
+
+(use-package multiple-cursors
   :ensure t
+  :bind ("C-c m" . 'mc/edit-lines)
   )
-
-
-;; =================================
-;; ====== MAGIT (GIT COMFORT) ======
-;; =================================
-
-(use-package magit
-  :ensure t
-  :bind ("C-x g" . 'magit-status)
-  )
-;; NOTE: magit-diff-range for diffs between branches
-(use-package magit-delta
-  :ensure t
-  )
-
-
-;; ===================
-;; ====== MPDEL ======
-;; ===================
-;(require 'mpdel)
-;(require 'ivy-mpdel)
-;(mpdel-mode)
 
 
 ;; ===============================
@@ -852,47 +799,6 @@ There are two things you can do about this warning:
 	 (pdf-view-mode . (lambda() (visual-line-mode -1))))
   )
 
-
-;; ======================
-;; ====== ORG MODE ======
-;; ======================
-
-(use-package org
-  :ensure t
-  ;; See https://emacs.stackexchange.com/questions/60379/c-c-c-e-l-o-does-not-open-the-pdf-anymore
-  :config (push '("\\.pdf\\'" . emacs) org-file-apps)
-  :config (push '("\\.html\\'" . epiphany) org-file-apps)
-  :config (remove-hook 'org-cycle-hook
-		       #'org-optimize-window-after-visibility-change)
-  :custom ((org-log-done 'time)
-	   (org-hide-emphasis-markers t)
-	   (org-latex-listings 'minted)
-	   (org-latex-minted-options '(("autogobble=true")
-				       ("frame" "single") ;; (none | leftline | topline | bottomline | lines | single)
-				       ("fontsize=\\scriptsize")
-				       ("linenos=true")))
-	   (org-latex-prefer-user-labels t)
-	   (org-latex-pdf-process
-	    '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	      "bibtex %b"
-              "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-              "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
-  )
-
-;; Fancy bullets for sections
-(use-package org-bullets
-  :ensure t
-  :hook (org-mode . org-bullets-mode)
-  )
-
-;; Only good if the figures already have the same aspect ratio
-(use-package ox-latex-subfigure
-  :ensure t
-  :after ox
-  :custom (org-latex-prefer-user-labels t)
-  )
-
-
 ;; ==========================
 ;; ====== POLY-ANSIBLE ======
 ;; ==========================
@@ -916,73 +822,6 @@ There are two things you can do about this warning:
     (define-key dired-mode-map (kbd "Q") 'quick-preview-at-point)))
 
 
-;; ================================
-;; ====== RAINBOW DELIMITERS ======
-;; ================================
-
-(use-package rainbow-delimiters
-  :ensure t
-  :hook (scheme-mode . rainbow-delimiters)
-  )
-
-
-;; ======================================
-;; ====== RTAGS (SURVIVING TO C++) ======
-;; ======================================
-;; SEE https://thebeautifullmind.com/2019/07/13/rtags-completes-emacs/
-;; On Fedora Linux:
-;;;; dnf in rtags
-;(when (package-installed-p 'rtags)
-;  (progn
-;    (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
-;    (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
-;    (add-hook 'objc-mode-hook 'rtags-start-process-unless-running)
-;
-;    (defun setup-flycheck-rtags ()
-;      (interactive)
-;      (flycheck-select-checker 'rtags)
-;      (setq-local flycheck-highlighting-mode nil)
-;      (setq-local flycheck-check-syntax-automatically nil))
-;
-;    (rtags-enable-standard-keybindings)
-;    (setq rtags-autostart-diagnostics t)
-;    (rtags-diagnostics)
-;
-;    (push 'company-rtags company-backends)
-;
-;    (setq rtags-completions-enabled t)
-;
-;    ;; use rtags flycheck mode -- clang warnings shown inline
-;    (require 'flycheck-rtags)
-;    ;; c-mode-common-hook is also called by c++-mode
-;    (add-hook 'c-mode-common-hook #'setup-flycheck-rtags)
-;
-;    (when (package-installed-p 'ivy-rtags)
-;      (setq rtags-display-result-backend 'ivy))))
-
-
-;; =====================
-;; ====== COUNSEL ======
-;; =====================
-
-(use-package counsel
-  :ensure t
-  )
-
-
-;; ================================
-;; ====== COUNSEL-PROJECTILE ======
-;; ================================
-
-(use-package counsel-projectile
-  :ensure t
-  :init (counsel-projectile-mode)
-  :bind (:map projectile-mode-map
-	      ("C-c p" . 'projectile-commander))
-  :custom (projectile-use-git-grep 1)
-  )
-
-
 ;; ==========================================
 ;; ====== SWIPER (COMPLETION FRONTEND) ======
 ;; ==========================================
@@ -994,28 +833,9 @@ There are two things you can do about this warning:
   )
 
 
-;; =============================================================
-;; ====== TERM, ANSI-TERM, VTERM, MULTI-TERM, MULTI-VTERM ======
-;; =============================================================
-
-(use-package multi-term
-  :ensure t
-  :config (defadvice term-handle-exit
-	      (after term-kill-buffer-on-exit activate)
-	    (kill-buffer))
-  :bind ("C-x t" . 'multi-term)
-  )
-
-(use-package multi-vterm
-  :ensure vterm
-  :ensure t
-  :bind ("C-x t" . 'multi-vterm)
-  )
-
-
-; ======================================
-; ====== TELEGA (TELEGRAM CLIENT) ======
-; ======================================
+;; ======================================
+;; ====== TELEGA (TELEGRAM CLIENT) ======
+;; ======================================
 ;;;;; If on Fedora, in order for telegram-server to compile, install tdlib from
 ;;;;;;;  https://copr.fedorainfracloud.org/coprs/carlis/tdlib-fresh/
 
@@ -1042,9 +862,208 @@ There are two things you can do about this warning:
   )
 
 
+;; =============================================================
+;; ====== TERM, ANSI-TERM, VTERM, MULTI-TERM, MULTI-VTERM ======
+;; =============================================================
+
+(use-package multi-term
+  :ensure t
+  :config (defadvice term-handle-exit
+	      (after term-kill-buffer-on-exit activate)
+	    (kill-buffer))
+  :bind ("C-x t" . 'multi-term)
+  )
+
+(use-package multi-vterm
+  :ensure vterm
+  :ensure t
+  :bind ("C-x t" . 'multi-vterm)
+  )
+
+
+;; ===============================
+;; ======= VIEW LARGE FILES ======
+;; ===============================
+
+(use-package vlf
+  :ensure t
+  :init (require 'vlf-setup)
+  )
+
+
+;; =========================
+;; ======= VIMRC MODE ======
+;; =========================
+
+(use-package vimrc-mode
+  :ensure t
+  )
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; =================================================
+;; ====== Per-package settings --- AESTHETICS ======
+;; =================================================
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; ===========================
+;; ====== DOOM-MODELINE ======
+;; ===========================
+
+(use-package doom-modeline
+  :ensure t
+  :ensure all-the-icons
+  ;:config (all-the-icons-install-fonts)
+  :custom ((doom-modeline-buffer-encoding t)
+	   (doom-modeline-env-version t)
+	   ;(doom-modeline-icon (display-graphic-p))
+	   (doom-modeline-icon t)
+	   (doom-modeline-irc t)
+	   (doom-modeline-minor-modes t)
+	   (inhibit-compacting-font-caches t))
+  :hook (after-init . doom-modeline-mode)
+  )
+
+
+;; ====================================
+;; ====== GRUVBOX (COLOR SCHEME) ======
+;; ====================================
+
+(use-package gruvbox-theme
+  :ensure t
+  )
+
+
+;; ========================================
+;; ====== MONOKAI PRO (COLOR SCHEME) ======
+;; ========================================
+
+(use-package monokai-pro-theme
+  :ensure t
+  )
+
+
+;; ================================
+;; ====== RAINBOW DELIMITERS ======
+;; ================================
+
+(use-package rainbow-delimiters
+  :ensure t
+  :hook (scheme-mode . rainbow-delimiters)
+  )
+
+
+;; ===============================================
+;; ====== SANITYINC TOMORROW (COLOR SCHEME) ======
+;; ===============================================
+
+(use-package color-theme-sanityinc-tomorrow
+  :ensure t
+  )
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ============================================
+;; ====== Per-package settings --- LaTeX ======
+;; ============================================
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; ===========================================
+;; ====== LaTeX --- COMFORT WITH AUCTEX ======
+;; ===========================================
+
+(use-package tex
+  :defer t
+  :ensure auctex :ensure auctex-latexmk
+  :config (progn
+	    (auctex-latexmk-setup)
+	    ;; Update PDF buffers after successful LaTeX runs
+	    (add-hook 'TeX-after-compilation-finished-functions
+		      #'TeX-revert-document-buffer))
+  :custom ((TeX-engine 'xetex)
+	   (reftex-plug-into-AUCTeX t)
+	   (reftex-extra-bindings t); C-c c is enough for citations
+	   (TeX-view-program-selection '((output-pdf "PDF Tools"))); Use pdf-tools to open PDF files
+	   (TeX-source-correlate-start-server t))
+  :hook ((LaTeX-mode turn-on-reftex)
+	 (Tex-mode . flyspell-mode); Enable spell check (not for comments)
+	 (Tex-mode . auto-complete)
+	 (Tex-mode . (lambda() (local-set-key [C-tab] 'TeX-complete-symbol))))
+  )
+
+
+;; ======================================
+;; ====== LaTeX --- MATH PREVIEW  =======
+;; ======================================
+
+(use-package latex-math-preview
+  :ensure t
+  :bind ("C-c e" . 'latex-math-preview-expression); Preview for equations
+  )
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ==========================================
+;; ====== Per-package settings --- ORG ======
+;; ==========================================
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; ======================
+;; ====== ORG MODE ======
+;; ======================
+
+(use-package org
+  :ensure t
+  ;;;; SEE:
+  ;; https://emacs.stackexchange.com/questions/60379/c-c-c-e-l-o-does-not-open-the-pdf-anymore
+  :config (push '("\\.pdf\\'" . emacs) org-file-apps)
+  :config (push '("\\.html\\'" . epiphany) org-file-apps)
+  :config (remove-hook 'org-cycle-hook
+		       #'org-optimize-window-after-visibility-change)
+  :custom ((org-log-done 'time)
+	   (org-hide-emphasis-markers t)
+	   (org-latex-listings 'minted)
+	   (org-latex-minted-options '(("autogobble=true")
+				       ("frame" "single") ;; (none | leftline | topline | bottomline | lines | single)
+				       ("fontsize=\\scriptsize")
+				       ("linenos=true")))
+	   (org-latex-prefer-user-labels t)
+	   (org-latex-pdf-process
+	    '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+	      "bibtex %b"
+              "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+              "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
+  )
+
+
+;; =========================
+;; ====== ORG BULLETS ======
+;; =========================
+
+;; Fancy bullets for sections
+(use-package org-bullets
+  :ensure t
+  :hook (org-mode . org-bullets-mode)
+  )
+
+
+;; ==================================
+;; ====== ORG LaTeX SUBFIGURES ======
+;; ==================================
+
+;; Only good if the figures already have the same aspect ratio
+(use-package ox-latex-subfigure
+  :ensure t
+  :after ox
+  :custom (org-latex-prefer-user-labels t)
+  )
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; =============================
 ;; ====== GLOBAL KEYBINDS ======
 ;; =============================
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "H-f") 'forward-word)
 (global-set-key (kbd "H-b") 'backward-word)
@@ -1092,6 +1111,13 @@ There are two things you can do about this warning:
 (global-set-key-extended (kbd "C-c C-j") OTF "julia" "Julia")
 (global-set-key-extended (kbd "C-c C-m") OTF "cmus" "CMUS")
 (global-set-key-extended (kbd "C-c C-p") OTF "htop" "HTOP")
+;(global-set-key-extended (kbd "C-c C-t") OTF "" "vterm")
+
+(defun launch-terminal ()
+  (interactive)
+  (progn
+    (OTF "echo 'WELCOME BACK TO YOUR TRUSTY TERMINAL!'" "vterm" )))
+(global-set-key (kbd "C-c C-t") 'launch-terminal)
 
 (global-set-key [f12] 'load-dark-theme)
 (global-set-key [f8] 'load-light-theme)
@@ -1119,23 +1145,14 @@ There are two things you can do about this warning:
 
   (setq ring-bell-function 'ignore); On Windows the bell is usually annoying, the visible unuseful
   )
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("4eb6fa2ee436e943b168a0cd8eab11afc0752aebb5d974bba2b2ddc8910fca8f" "6b5c518d1c250a8ce17463b7e435e9e20faa84f3f7defba8b579d4f5925f60c1" "d14f3df28603e9517eb8fb7518b662d653b25b26e83bd8e129acea042b774298" "e3a1b1fb50e3908e80514de38acbac74be2eb2777fc896e44b54ce44308e5330" "b02eae4d22362a941751f690032ea30c7c78d8ca8a1212fdae9eecad28a3587f" "b6269b0356ed8d9ed55b0dcea10b4e13227b89fd2af4452eee19ac88297b0f99" "fb83a50c80de36f23aea5919e50e1bccd565ca5bb646af95729dc8c5f926cbf3" "b89a4f5916c29a235d0600ad5a0849b1c50fab16c2c518e1d98f0412367e7f97" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "36ca8f60565af20ef4f30783aa16a26d96c02df7b4e54e9900a5138fb33808da" "c8b83e7692e77f3e2e46c08177b673da6e41b307805cd1982da9e2ea2e90e6d7" "24168c7e083ca0bbc87c68d3139ef39f072488703dcdd82343b8cab71c0f62a7" default))
- '(package-selected-packages
-   '(magit-delta vimrc-mode gnuplot-mode gnuplot haskell-mode cyberpunk-theme color-theme-sanityinc-tomorrow ample-theme monokai-pro-theme tiny use-package telega rainbow-delimiters quick-preview python-black poly-ansible pdf-tools ox-latex-subfigure org-bullets nov multiple-cursors multi-vterm multi-term meson-mode magit latex-math-preview key-chord julia-mode irony-eldoc hydra htmlize helm-bibtex gruvbox-theme geiser flycheck-irony elpy doom-modeline dired-sidebar counsel-projectile company-irony-c-headers company-irony company-c-headers company-ansible cmake-ide circe auto-complete-auctex auctex-latexmk apdl-mode)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
-;; ====== GARBAGE COLLECTOR ======
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ===============================
+;; ====== GARGABE COLLECTOR ======
+;; ===============================
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;; NOTE:: This overrides the values used while reading the config
 (setq gc-cons-threshold (* 4 1024 1024))
 (setq gc-cons-percentage 0.1)
