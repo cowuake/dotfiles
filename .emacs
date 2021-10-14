@@ -1065,39 +1065,41 @@ There are two things you can do about this warning:
 ;; =============================
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(global-set-key (kbd "H-f") 'forward-word)
-(global-set-key (kbd "H-b") 'backward-word)
-(global-set-key (kbd "H-p") 'beginning-of-buffer)
-(global-set-key (kbd "H-n") 'end-of-buffer)
-(global-set-key (kbd "C-c n") 'next-buffer)
-(global-set-key (kbd "C-c b") 'previous-buffer)
-(global-set-key (kbd "C-c s") 'create-scratch-buffer); Create scratch or swith to existing
-(global-set-key (kbd "C-c C-l") 'magit-log-buffer-file); Summon git history for file in buffer
-(global-set-key (kbd "C-c r") 'reload-config); Reload configuration
-(global-set-key (kbd "C-c c") 'kill-ring-save); Copy text
-(global-set-key (kbd "C-x C-b") 'ibuffer); A buffer to rule them all
-(global-set-key (kbd "C-S-a") 'ansi-term); Terminal emulator
-(global-set-key (kbd "C-S-s") 'eshell); Emacs shell: Emacs Lisp interpreter is there
 (global-set-key (kbd "C-:") 'goto-line); Quasi-Vim choice for reaching a line
-(global-set-key (kbd "C-x b") 'ivy-switch-buffer); Replace default buffer switching
+(global-set-key (kbd "C-S-a") 'ansi-term); Terminal emulator
 (global-set-key (kbd "C-S-c") 'clean); Kill the buffer (and the window if not unique)
+(global-set-key (kbd "C-S-s") 'eshell); Emacs shell: Emacs Lisp interpreter is there
+(global-set-key (kbd "C-u") 'backward-word)
+(global-set-key (kbd "C-c C-l") 'magit-log-buffer-file); Summon git history for file in buffer
+(global-set-key (kbd "C-h") 'forward-word)
+(global-set-key (kbd "C-c b") 'previous-buffer)
+(global-set-key (kbd "C-c c") 'kill-ring-save); Copy text
+(global-set-key (kbd "C-c n") 'next-buffer)
+(global-set-key (kbd "C-c r") 'reload-config); Reload configuration
+(global-set-key (kbd "C-c s") 'create-scratch-buffer); Create scratch or swith to existing
+(global-set-key (kbd "C-x C-b") 'ibuffer); A buffer to rule them all
+(global-set-key (kbd "C-x b") 'ivy-switch-buffer); Replace default buffer switching
+(global-set-key (kbd "H-b") 'backward-word)
+(global-set-key (kbd "H-f") 'forward-word)
+(global-set-key (kbd "H-n") 'end-of-buffer)
+(global-set-key (kbd "H-p") 'beginning-of-buffer)
 ;; Resize frames (Vim style)
 (global-set-key (kbd "C-S-h") 'shrink-window-horizontally)
-(global-set-key (kbd "C-S-l") 'enlarge-window-horizontally)
 (global-set-key (kbd "C-S-j") 'shrink-window)
 (global-set-key (kbd "C-S-k") 'enlarge-window)
+(global-set-key (kbd "C-S-l") 'enlarge-window-horizontally)
 ;; Numbering
 (global-set-key (kbd "C-x +") 'shift-number-up); Increment number
 (global-set-key (kbd "C-x -") 'shift-number-down); Decrease number
 ;; Move between windows (directional arrows)
-(global-set-key (kbd "C-c <up>") 'windmove-up); Move to upper window
 (global-set-key (kbd "C-c <down>") 'windmove-down); Move to lower window
 (global-set-key (kbd "C-c <left>") 'windmove-left); Move to left window
 (global-set-key (kbd "C-c <right>") 'windmove-right); Move to right window
+(global-set-key (kbd "C-c <up>") 'windmove-up); Move to upper window
 ;; Move between windows (Vim style)
-(global-set-key (kbd "C-c k") 'windmove-up); Move to upper window
-(global-set-key (kbd "C-c j") 'windmove-down); Move to lower window
 (global-set-key (kbd "C-c h") 'windmove-left); Move to left window
+(global-set-key (kbd "C-c j") 'windmove-down); Move to lower window
+(global-set-key (kbd "C-c k") 'windmove-up); Move to upper window
 (global-set-key (kbd "C-c l") 'windmove-right); Move to right window
 
 ;(global-set-key (kbd "C-c C-j") (bind-OTF "julia" "Julia"))
@@ -1110,7 +1112,7 @@ There are two things you can do about this warning:
 
 (global-set-key-extended (kbd "C-c C-j") OTF "julia" "Julia")
 (global-set-key-extended (kbd "C-c C-m") OTF "cmus" "CMUS")
-(global-set-key-extended (kbd "C-c C-p") OTF "htop" "HTOP")
+(global-set-key-extended (kbd "C-c C-h") OTF "htop" "HTOP")
 ;(global-set-key-extended (kbd "C-c C-t") OTF "" "vterm")
 
 (defun launch-terminal ()
