@@ -8,6 +8,10 @@
 ######################################################################
 ### Note: the font above is ANSI Shadow
 
+# =========================
+# ====== WHO'S THAT? ======
+# =========================
+# Riccardo Mura created and uses this configuration file
 
 # ======================
 # ====== SOURCING ======
@@ -25,6 +29,12 @@ if [ -f ~/.addenda ] ; then
     . ~/.addenda
 fi
 
+
+###############################
+# ============================
+# ====== SHELL SETTINGS ======
+# ============================
+###############################
 
 # =====================
 # ====== INPUTRC ======
@@ -141,10 +151,15 @@ PATH=$GIT_CLONES_DIR/refine/build/bin:$PATH
 export JULIA_NUM_THREADS=$CPU_CORES
 
 
+#################################
 # ==============================
 # ====== USEFUL FUNCTIONS ======
 # ==============================
+#################################
 
+# ===============================
+# ====== Distro Facilities ======
+# ===============================
 function on-classic-linux() {
     if [[ -f "/etc/os-release" ]] ; then
 	if [[ `cat /etc/os-release | grep \^NAME` == *"$1"* ]] ; then
@@ -221,107 +236,155 @@ function update-distro() {
 }
 
 
+####################################################
 # =================================================
 # ====== ALIASES TO BE USED ON EVERY MACHINE ======
 # =================================================
+####################################################
 
-# User specific aliases
-alias l="ls -lah"
-alias ll="ls -lahtr"
-alias lll="ls -lahSr"
-alias lf="ls -d */"
+# =======================
+# ====== Utilities ======
+# =======================
 alias ..="cd ../"
 alias ...="cd ../../"
 alias ....="cd ../../../"
+alias battery-state="sudo tlp-stat -b"
+alias bibmerge="bibtool -s -d"
 alias e="emacsclient"
-alias ewe="emacs --daemon"
 alias ee="emacsclient -nw"
 alias et="emacs -nw"
+alias ewe="emacs --daemon"
+alias feh="feh --scale-down --auto-zoom"
+alias freecache="sudo su -c 'sync; echo 1 > /proc/sys/vm/drop_caches'"
+alias generate-ssh-key="ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/id_ed25519"
+alias gp="gnuplot"
+alias h="htop"
+alias l="ls -lah"
+alias lf="ls -d */"
+alias ll="ls -lahtr"
+alias lll="ls -lahSr"
+alias myhtop="htop -u $USER"
+alias mytop="top -u $USER"
 alias o="xdg-open"
 alias open="xdg-open"
-alias gp="gnuplot"
+alias reboot="systemctl reboot"
+alias remotesync-old="rsync-old -az --no-i-r"
+alias remotesync="/usr/bin/env rsync -az --info=progress2 --no-i-r"
+alias reswap="sudo swapoff -a && sudo swapon -a"
+alias rsync-old="/usr/bin/env rsync --no-i-r"
+alias rsync="/usr/bin/env rsync --info=progress2 --no-i-r"
 alias sc="screen"
-alias bibmerge="bibtool -s -d"
+alias space="du -h --max-depth=1 | sort -h"
+alias t="tmux"
+alias ta="tmux attach-session"
 alias temp="sensors"
-alias mytop="top -u $USER"
-alias myhtop="htop -u $USER"
 alias tf="tail -f"
-alias h="htop"
+alias update-firmwares="fwupdmgr get-devices && fwupdmgr refresh --force && fwupdmgr update"
+alias v="sudo vpnc"
+alias vd="sudo vpnc-disconnect"
+alias vi="vim"
+
+# =================
+# ====== Git ======
+# =================
+alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
+alias gc="git commit"
+alias gin="git pull"
+alias gout="git push"
+
+# =======================
+# ====== Hardware  ======
+# =======================
+alias cpu-boost-off="echo 0 | sudo tee /sys/devices/system/cpu/cpufreq/boost"
+alias cpu-boost-on="echo 1 | sudo tee /sys/devices/system/cpu/cpufreq/boost"
+alias cpu-boost="cat /sys/devices/system/cpu/cpufreq/boost"
+alias cpu-frequency="lscpu | grep MHz"
+alias governor-conservative="sudo cpupower frequency-set -g conservative"
+alias governor-ondemand="sudo cpupower frequency-set -g ondemand"
+alias governor-performance="sudo cpupower frequency-set -g performance"
+alias governor-powersave="sudo cpupower frequency-set -g powersave"
+alias governor-schedutil="sudo cpupower frequency-set -g schedutil"
+alias governor="cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
+
+# =============================================
+# ====== Frequently Accessed Directories ======
+# =============================================
+alias c="cd $GIT_CLONES_DIR"
 alias d="cd ~/Downloads"
 alias r="cd $GIT_REPOS_DIR"
-alias c="cd $GIT_CLONES_DIR"
-#alias julia='julia --threads $(echo "$(nproc --all) / 2" | bc)'
-#alias julia="julia -p $(echo "$(nproc --all) / 2" | bc)"
-alias mesh="~/gitRepos/SU2_functionalUtilities/mesh.jl"
+
+# =====================
+# ====== Desktop ======
+# =====================
+alias gnome-external-keyboard="gsettings set org.gnome.desktop.input-sources xkb-options \"['compose:ralt']\""
+alias gnome-internal-keyboard="gsettings set org.gnome.desktop.input-sources xkb-options \"['lv3:ralt_switch', 'altwin:swap_alt_win', 'compose:ralt', 'ctrl:swapcaps_hyper']\""
+
+# ====================
+# ====== Python ======
+# ====================
 alias anaconda2="$HOME/anaconda2/bin/python"
 alias anaconda3="$HOME/anaconda3/bin/python"
 alias conda2="$HOME/anaconda2/bin/conda"
 alias conda3="$HOME/anaconda3/bin/conda"
+
 alias anaconda2-update-consistent="conda2 update anaconda"
 alias anaconda3-update-consistent="conda3 update anaconda"
 alias anaconda2-update-newest="conda2 update conda && conda2 update --all"
 alias anaconda3-update-newest="conda3 update conda && conda3 update --all"
-alias rsync="/usr/bin/env rsync --info=progress2 --no-i-r"
-alias remotesync="/usr/bin/env rsync -az --info=progress2 --no-i-r"
-alias rsync-old="/usr/bin/env rsync --no-i-r"
-alias remotesync-old="rsync-old -az --no-i-r"
-alias space="du -h --max-depth=1 | sort -h"
-alias feh="feh --scale-down --auto-zoom"
-alias quake2="$GIT_CLONES_DIR/yquake2/release/quake2"
-alias quake3="$GIT_CLONES_DIR/ioq3/build/release-linux-x86_64/ioquake3.x86_64"
+
+# =====================================================
+# ====== Games and other (invasive) applications ======
+# =====================================================
 alias matlab="matlab & disown matlab"
 alias matlabcli="matlab -nodesktop -nosplash"
-alias vi="vim"
-alias battery-state="sudo tlp-stat -b"
-alias t="tmux"
-alias ta="tmux attach-session"
-alias v="sudo vpnc"
-alias vd="sudo vpnc-disconnect"
+alias quake2="$GIT_CLONES_DIR/yquake2/release/quake2"
+alias quake3="$GIT_CLONES_DIR/ioq3/build/release-linux-x86_64/ioquake3.x86_64"
 
+# ==================================
+# ====== Temporary Facilities ======
+# ==================================
 alias ff="FreeFem++-mpi_openmpi"
-
-alias generate-ssh-key="ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/id_ed25519"
-
-alias reswap="sudo swapoff -a && sudo swapon -a"
-alias freecache="sudo su -c 'sync; echo 1 > /proc/sys/vm/drop_caches'"
-
-alias governor="cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
-alias governor-performance="sudo cpupower frequency-set -g performance"
-alias governor-ondemand="sudo cpupower frequency-set -g ondemand"
-alias governor-conservative="sudo cpupower frequency-set -g conservative"
-alias governor-schedutil="sudo cpupower frequency-set -g schedutil"
-alias governor-powersave="sudo cpupower frequency-set -g powersave"
-alias cpu-boost="cat /sys/devices/system/cpu/cpufreq/boost"
-alias cpu-boost-off="echo 0 | sudo tee /sys/devices/system/cpu/cpufreq/boost"
-alias cpu-boost-on="echo 1 | sudo tee /sys/devices/system/cpu/cpufreq/boost"
-alias cpu-frequency="lscpu | grep MHz"
-alias update-firmwares="fwupdmgr get-devices && fwupdmgr refresh --force && fwupdmgr update"
-#alias ompi="$OPENMPI_INSTALL_DIR/bin/mpirun -n $((`nproc --all`/2))"
-#alias mpich="$MPICH_INSTALL_DIR/bin/mpirun -n $((`nproc --all`/2))"cc
-#alias mpi="mpirun -n $((`nproc --all`/2))"
-
-alias gnome-internal-keyboard="gsettings set org.gnome.desktop.input-sources xkb-options \"['lv3:ralt_switch', 'altwin:swap_alt_win', 'compose:ralt', 'ctrl:swapcaps_hyper']\""
-alias gnome-external-keyboard="gsettings set org.gnome.desktop.input-sources xkb-options \"['compose:ralt']\""
-
-alias reboot="systemctl reboot"
-
-alias gc="git commit"
-alias gin="git pull"
-alias gout="git push"
-alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
-
+alias mesh="~/$GIT_REPOS_DIR/SU2_functionalUtilities/mesh.jl"
 
 # ===========================================================
 # ====== PERL ONE-LINERS (I.E., ADDITIONAL ALIASES...) ======
 # ===========================================================
-
 # Not escaped version: perl -e 'rename$_,y/ /_/drfor<"* *">'
 alias adjust-filenames="perl -e 'rename\$_,y/ /_/drfor<\"* *\">'"
 
+# ============================================================
+# ====== FEDORA ADDITIONS (I.E., ADDITIONAL ALIASES...) ======
+# ============================================================
 
+if [[ -f "/etc/os-release" && on-fedora ]] ; then
+    alias fedora-dnf-reset="sudo dnf clean all && sudo dnf makecache --refresh -v"
+    alias fedora-enable-chez-scheme="sudo dnf copr enable superboum/chez-scheme"
+    alias fedora-enable-tdlib-fresh="sudo dnf copr enable carlis/tdlib-fresh"
+    alias fedora-enable-tlprepo="sudo dnf in https://repo.linrunner.de/fedora/tlp/repos/releases/tlp-release.fc$(rpm -E %fedora).noarch.rpm"
+    alias fedora-enable-rpmfusion="sudo dnf in https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+      https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
+    alias fedora-my-kernels="dnf list installed kernel"
+    alias fedora-my-packages="dnf repoquery --qf '%{name}' --userinstalled \
+      | grep -v -- '-debuginfo$' \
+      | grep -v '^\(kernel-modules\|kernel\|kernel-core\|kernel-devel\)$'"
+    alias fedora-my-repositories="dnf repolist enabled"
+fi
+
+# ==========================================================
+# ====== RHEL ADDITIONS (I.E., ADDITIONAL ALIASES...) ======
+# ==========================================================
+alias rhel-awake-subscription="sudo subscription-manager remove --all; \
+      		   	       sudo subscription-manager unregister; \
+			       sudo subscription-manager clean; \
+			       sudo subscription-manager register; \
+			       sudo subscription-manager attach --auto"
+
+
+#######################################
 # ====================================
 # ====== SU2 / SLURM FACILITIES ======
 # ====================================
+#######################################
 
 #function su2-here() {
 #    export SU2_RUN=$(pwd)/bin
@@ -471,29 +534,3 @@ alias su2-rebuild-debug="./meson.py build --reconfigure --buildtype=debug -Dwith
 
 alias su2-clean-dir="find ./* -type f -not -name '*.cfg' -not -name '*.su2' -not -name '*.sl' -delete"
 alias su2-wipe-build="./meson.py setup --wipe build/"
-
-
-# ============================================================
-# ====== FEDORA ADDITIONS (I.E., ADDITIONAL ALIASES...) ======
-# ============================================================
-
-if [[ -f "/etc/os-release" && on-fedora ]] ; then
-    alias fedora-dnf-reset="sudo dnf clean all && sudo dnf makecache --refresh -v"
-    alias fedora-enable-chez-scheme="sudo dnf copr enable superboum/chez-scheme"
-    alias fedora-enable-tdlib-fresh="sudo dnf copr enable carlis/tdlib-fresh"
-    alias fedora-enable-tlprepo="sudo dnf in https://repo.linrunner.de/fedora/tlp/repos/releases/tlp-release.fc$(rpm -E %fedora).noarch.rpm"
-    alias fedora-enable-rpmfusion="sudo dnf in https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
-      https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
-    alias fedora-my-kernels="dnf list installed kernel"
-    alias fedora-my-packages="dnf repoquery --qf '%{name}' --userinstalled \
-      | grep -v -- '-debuginfo$' \
-      | grep -v '^\(kernel-modules\|kernel\|kernel-core\|kernel-devel\)$'"
-    alias fedora-my-repositories="dnf repolist enabled"
-fi
-
-
-alias rhel-awake-subscription="sudo subscription-manager remove --all; \
-      		   	       sudo subscription-manager unregister; \
-			       sudo subscription-manager clean; \
-			       sudo subscription-manager register; \
-			       sudo subscription-manager attach --auto"
