@@ -28,6 +28,26 @@
 ;;;;;; It is often said that Doom Emac's startup is fast. And it's true!
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ===============================
+;; ====== MACRO DEFINITIONS ======
+;; ===============================
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmacro bind-with-args (f &rest args)
+  `(lambda ()
+     (interactive)
+     (,f ,@args)))
+
+(defmacro global-set-key-extended (key command &rest args)
+  `(global-set-key ,key (lambda () (interactive) (,command ,@args))))
+
+(defmacro setvar (name &rest args)
+  `(if (not (boundp ',name))
+       (defvar ,name ,@args)
+     (setq ,name ,@args)))
+
+
 ;; ==========================================
 ;; ====== GLOBAL CONSTANTS AND ALIASES ======
 ;; ==========================================
@@ -43,35 +63,35 @@
   nil)
 
 ;; ====== FONTS ======
-(setq font-linux "Source Code Pro")
+(setvar font-linux "Source Code Pro")
 ;(setq font-linux "Cascadia Code")
-(setq font-linux-fallback "DejaVu Sans Mono")
-(setq font-darwin "Monaco")
-(setq font-darwin-fallback "Menlo")
-(setq font-windows "Consolas")
-(setq font-windows-fallback "Lucida Console")
+(setvar font-linux-fallback "DejaVu Sans Mono")
+(setvar font-darwin "Monaco")
+(setvar font-darwin-fallback "Menlo")
+(setvar font-windows "Consolas")
+(setvar font-windows-fallback "Lucida Console")
 
 ;; ====== COLOR THEME ======
-(setq theme-dark 'monokai-pro-octagon)
+(setvar theme-dark 'monokai-pro-octagon)
 ;(setq theme-light 'sanityinc-tomorrow-day)
-(setq theme-light 'gruvbox-light-medium)
+(setvar theme-light 'gruvbox-light-medium)
 
 ;; ====== GEOMETRY ======
-(setq geometry-width 110)
-(setq geometry-height 40)
-(setq geometry-margin-top 70)
-(setq geometry-margin-left 140)
+(setvar geometry-width 110)
+(setvar geometry-height 40)
+(setvar geometry-margin-top 70)
+(setvar geometry-margin-left 140)
 
 
 ;; ====== DOC VIEW ======
-(setq doc-view-resolution 400)
+(setvar doc-view-resolution 400)
 
 
 ;; ====== C / C++ ======
-(setq c-default-style "stroustrup")
+(setvar c-default-style "stroustrup")
 
 ;; ====== SCHEME ======
-(defvar chicken-startup-lib "~/fluent-assistant/portable-core.scm"
+(setvar chicken-startup-lib "~/fluent-assistant/portable-core.scm"
   "Path to the library to be loaded when running CHICKEN Scheme via geiser.")
 (add-hook 'scheme-mode-hook 'show-paren-mode)
 ;(add-hook 'scheme-mode-hook 'paredit-mode)
@@ -206,21 +226,6 @@ or switch to the buffer if it already exists"
 	  (message filename)))
       (global-set-key [f4] 'screenshot-svg))
   nil)
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ===============================
-;; ====== MACRO DEFINITIONS ======
-;; ===============================
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defmacro bind-with-args (f &rest args)
-  `(lambda ()
-     (interactive)
-     (,f ,@args)))
-
-(defmacro global-set-key-extended (key command &rest args)
-  `(global-set-key ,key (lambda () (interactive) (,command ,@args))))
 
 
 ;; ================================
@@ -541,9 +546,18 @@ There are two things you can do about this warning:
 ;; ====== RUST  ======
 ;; ===================
 
-(use-package rust-mode
+(use-package lsp-mode
+  :ensure t
+  :commands lsp
+  :custom (lsp-prefer-capf t)
+  )
+(use-package lsp-ui
   :ensure t
   )
+(use-package rustic
+  :ensure
+  )
+
 
 
 ;; =======================================
@@ -665,7 +679,10 @@ There are two things you can do about this warning:
   :ensure company-irony
   :ensure company-irony-c-headers
   :hook (after-init . global-company-mode)
-  :custom ((company-idle-delay 0.5))
+  :custom ((company-idle-delay 0.5)
+	   (company-tooltip-align-annotations t) ;; Added for Rust
+	   (company-minimum-prefix-length 1) ;; Added for Rust
+	   )
   :config (progn
 	    (defvar my-company-backends '(company-ansible
     					  company-c-headers
@@ -738,9 +755,11 @@ There are two things you can do about this warning:
 
 (use-package flycheck
   :ensure t
+  :config (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
   :custom ((flycheck-check-syntax-automatically '(save new-line))
 	   (flycheck-display-errors-delay .9))
-  :hook ((c++-mode . flycheck-mode)
+  :hook ((prog-mode . flycheck-mode)
+	 (c++-mode . flycheck-mode)
 	 (c-mode . flycheck-mode)
 	 (objc-mode . flycheck-mode)
 	 )
@@ -1064,19 +1083,19 @@ There are two things you can do about this warning:
 ;; ====== GLOBAL KEYBINDS ======
 ;; =============================
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+;; IMPORTANT: Don't forget anything assigend to C-i is automatically assigned to TAB
 (global-set-key (kbd "C-:") 'goto-line); Quasi-Vim choice for reaching a line
 (global-set-key (kbd "C-S-a") 'ansi-term); Terminal emulator
 (global-set-key (kbd "C-S-c") 'clean); Kill the buffer (and the window if not unique)
 (global-set-key (kbd "C-S-s") 'eshell); Emacs shell: Emacs Lisp interpreter is there
-(global-set-key (kbd "C-u") 'backward-word)
 (global-set-key (kbd "C-c C-l") 'magit-log-buffer-file); Summon git history for file in buffer
-(global-set-key (kbd "C-h") 'forward-word)
 (global-set-key (kbd "C-c b") 'previous-buffer)
 (global-set-key (kbd "C-c c") 'kill-ring-save); Copy text
 (global-set-key (kbd "C-c n") 'next-buffer)
 (global-set-key (kbd "C-c r") 'reload-config); Reload configuration
 (global-set-key (kbd "C-c s") 'create-scratch-buffer); Create scratch or swith to existing
+(global-set-key (kbd "C-l") 'forward-word)
+(global-set-key (kbd "C-u") 'backward-word)
 (global-set-key (kbd "C-x C-b") 'ibuffer); A buffer to rule them all
 (global-set-key (kbd "C-x b") 'ivy-switch-buffer); Replace default buffer switching
 (global-set-key (kbd "H-b") 'backward-word)
@@ -1110,9 +1129,9 @@ There are two things you can do about this warning:
 ;(global-set-key (kbd "C-c C-m") (bind-with-args OTF "cmus" "CMUS"))
 ;(global-set-key (kbd "C-c C-p") (bind-with-args OTF "htop" "HTOP"))
 
+(global-set-key-extended (kbd "C-c C-h") OTF "htop" "HTOP")
 (global-set-key-extended (kbd "C-c C-j") OTF "julia" "Julia")
 (global-set-key-extended (kbd "C-c C-m") OTF "cmus" "CMUS")
-(global-set-key-extended (kbd "C-c C-h") OTF "htop" "HTOP")
 ;(global-set-key-extended (kbd "C-c C-t") OTF "" "vterm")
 
 (defun launch-terminal ()
