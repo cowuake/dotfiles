@@ -91,7 +91,7 @@
 (setvar c-default-style "stroustrup")
 
 ;; ====== SCHEME ======
-(setvar chicken-startup-lib "~/fluent-assistant/portable-core.scm"
+(defvar chicken-startup-lib "~/fluent-assistant/portable-core.scm"
   "Path to the library to be loaded when running CHICKEN Scheme via geiser.")
 (add-hook 'scheme-mode-hook 'show-paren-mode)
 ;(add-hook 'scheme-mode-hook 'paredit-mode)
@@ -1094,7 +1094,7 @@ There are two things you can do about this warning:
 (global-set-key (kbd "C-c n") 'next-buffer)
 (global-set-key (kbd "C-c r") 'reload-config); Reload configuration
 (global-set-key (kbd "C-c s") 'create-scratch-buffer); Create scratch or swith to existing
-(global-set-key (kbd "C-l") 'forward-word)
+(global-set-key (kbd "C-;") 'forward-word)
 (global-set-key (kbd "C-u") 'backward-word)
 (global-set-key (kbd "C-x C-b") 'ibuffer); A buffer to rule them all
 (global-set-key (kbd "C-x b") 'ivy-switch-buffer); Replace default buffer switching
