@@ -72,7 +72,7 @@
 (setvar font-windows-fallback "Lucida Console")
 
 ;; ====== COLOR THEME ======
-(setvar theme-dark 'monokai-pro-octagon)
+(setvar theme-dark 'monokai-pro-ristretto)
 ;(setq theme-light 'sanityinc-tomorrow-day)
 (setvar theme-light 'gruvbox-light-medium)
 
@@ -122,17 +122,21 @@
 ;; ==================================
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun OTF (process name)
-  "execute a process in a new terminal session on the fly
+(defun OTF (command name)
+  "execute a process in a new terminal session On The Fly
 or switch to the buffer if it already exists"
   (interactive)
   (if (get-buffer name)
       (switch-to-buffer name)
-    (progn
-      (multi-vterm)
-      (rename-buffer name)
-      (vterm-send-string process)
-      (execute-kbd-macro (kbd "<return>")))))
+    (if (string= 'command "") ;; Is there any command to be executed?
+	(progn
+	  (multi-vterm)
+	  (rename-buffer name))
+      (progn
+	(multi-vterm)
+	(rename-buffer name)
+	(vterm-send-string command)
+	(execute-kbd-macro (kbd "<return>"))))))
 
 ;;;; SEE:
 ;; https://www.emacswiki.org/emacs/RecreateScratchBuffer
@@ -1078,6 +1082,15 @@ There are two things you can do about this warning:
   )
 
 
+;; =====================
+;; ====== OX-HUGO ======
+;; =====================
+(use-package ox-hugo
+  :ensure t
+  :after ox
+  )
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; =============================
 ;; ====== GLOBAL KEYBINDS ======
@@ -1137,7 +1150,7 @@ There are two things you can do about this warning:
 (defun launch-terminal ()
   (interactive)
   (progn
-    (OTF "echo 'WELCOME BACK TO YOUR TRUSTY TERMINAL!'" "vterm" )))
+    (OTF "" "*vterm*" )))
 (global-set-key (kbd "C-c C-t") 'launch-terminal)
 
 (global-set-key [f12] 'load-dark-theme)
