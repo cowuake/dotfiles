@@ -72,8 +72,9 @@
 (setvar font-windows-fallback "Lucida Console")
 
 ;; ====== COLOR THEME ======
-(setvar theme-dark 'monokai-pro-ristretto)
+;(setvar theme-dark 'monokai-pro-ristretto)
 ;(setq theme-light 'sanityinc-tomorrow-day)
+(setvar theme-dark 'nord)
 (setvar theme-light 'gruvbox-light-medium)
 
 ;; ====== GEOMETRY ======
@@ -948,6 +949,15 @@ There are two things you can do about this warning:
   )
 
 
+;; ========================================
+;; ====== DREAM (COLOR SCHEME) ======
+;; ========================================
+
+(use-package dream-theme
+  :ensure t
+  )
+
+
 ;; ====================================
 ;; ====== GRUVBOX (COLOR SCHEME) ======
 ;; ====================================
@@ -962,6 +972,15 @@ There are two things you can do about this warning:
 ;; ========================================
 
 (use-package monokai-pro-theme
+  :ensure t
+  )
+
+
+;; ========================================
+;; ====== NORD (COLOR SCHEME) ======
+;; ========================================
+
+(use-package nord-theme
   :ensure t
   )
 

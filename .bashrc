@@ -169,6 +169,26 @@ export JULIA_NUM_THREADS=$CPU_CORES
 # ==============================
 #################################
 
+# ================================
+# ====== Generic Facilities ======
+# ================================
+function random-files() {
+    # Set number of files to be created
+    if [ $# -eq 0 ]; then N=1; else N=$1; fi
+    # Confirm the operation to be performed
+    echo "Going to create $N files with random names."
+    # LOOP
+    for i in $(seq 1 $N)
+    do
+	# Choose a random name
+	name="$(random | tr '\\/' '(' | tr '-' ')')"
+	# Generate the file
+	touch "$name"
+	# Confirm file creation
+	echo "Created file $i: $(pwd)/$name"
+    done
+}
+
 # ===============================
 # ====== Distro Facilities ======
 # ===============================
@@ -279,6 +299,7 @@ alias myhtop="htop -u $USER"
 alias mytop="top -u $USER"
 alias o="xdg-open"
 alias open="xdg-open"
+alias random="apg -MSNCL -m 5 -x 10 | head -n 1"
 alias reboot="systemctl reboot"
 alias remotesync-old="rsync-old -az --no-i-r"
 alias remotesync="/usr/bin/env rsync -az --info=progress2 --no-i-r"
@@ -292,7 +313,7 @@ alias ta="tmux attach-session"
 alias temp="sensors"
 alias tf="tail -f"
 alias update-firmwares="fwupdmgr get-devices && fwupdmgr refresh --force && fwupdmgr update"
-alias v="sudo vpnc"
+alias vc="sudo vpnc"
 alias vd="sudo vpnc-disconnect"
 alias vi="vim"
 
@@ -323,7 +344,10 @@ alias governor="cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
 # =============================================
 alias c="cd $GIT_CLONES_DIR"
 alias d="cd ~/Downloads"
+alias m="cd ~/Music"
+alias p="cd ~/Pictures"
 alias r="cd $GIT_REPOS_DIR"
+alias v="cd ~/Videos"
 
 # =====================
 # ====== Desktop ======
