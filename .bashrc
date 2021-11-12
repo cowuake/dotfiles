@@ -17,7 +17,10 @@
 # ====== SOURCING ======
 # ======================
 
-xrdb ~/.Xresources
+# Source .Xresources if present
+if [ -f ~/.Xresources ] ; then
+    xrdb ~/.Xresources
+fi
 
 # Source global definitions
 if [ -f /etc/bashrc ] ; then
@@ -312,6 +315,8 @@ alias t="tmux"
 alias ta="tmux attach-session"
 alias temp="sensors"
 alias tf="tail -f"
+alias ud="update-distro"
+alias uf="fwupdmgr get-devices && fwupdmgr refresh --force && fwupdmgr update"
 alias update-firmwares="fwupdmgr get-devices && fwupdmgr refresh --force && fwupdmgr update"
 alias vc="sudo vpnc"
 alias vd="sudo vpnc-disconnect"

@@ -74,8 +74,9 @@
 ;; ====== COLOR THEME ======
 ;(setvar theme-dark 'monokai-pro-ristretto)
 ;(setq theme-light 'sanityinc-tomorrow-day)
-(setvar theme-dark 'nord)
+;(setvar theme-dark 'nord)
 (setvar theme-light 'gruvbox-light-medium)
+(setvar theme-dark 'sanityinc-tomorrow-eighties)
 
 ;; ====== GEOMETRY ======
 (setvar geometry-width 110)
