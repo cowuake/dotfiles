@@ -135,6 +135,9 @@ CPU_CORES=$(cat /proc/cpuinfo | grep -m 1 "cpu cores" | awk '{print $4}')
 CPU_THREADS=$(nproc --all)
 CPU_THREADS_PER_CORE=$(echo "$CPU_THREADS / $CPU_CORES" | bc)
 
+### OPERATING SYSTEM
+KERNEL=$(uname -srv)
+
 ### TEXT EDITOR
 if [ -f "/usr/bin/emacs" ] ; then
     if ps -aux | grep "emacs  --daemon" > /dev/null 2>&1 ; then
@@ -294,6 +297,8 @@ alias freecache="sudo su -c 'sync; echo 1 > /proc/sys/vm/drop_caches'"
 alias generate-ssh-key="ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/id_ed25519"
 alias gp="gnuplot"
 alias h="htop"
+alias kernel="echo '$KERNEL'"
+alias k="echo '$KERNEL'"
 alias l="ls -lah"
 alias lf="ls -d */"
 alias ll="ls -lahtr"
@@ -321,6 +326,7 @@ alias update-firmwares="fwupdmgr get-devices && fwupdmgr refresh --force && fwup
 alias vc="sudo vpnc"
 alias vd="sudo vpnc-disconnect"
 alias vi="vim"
+alias x="exit"
 
 # =================
 # ====== Git ======

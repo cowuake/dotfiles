@@ -1090,10 +1090,20 @@ There are two things you can do about this warning:
   )
 
 
+;; ====================================
+;; ====== OX (ORG MODE EXPORTER) ======
+;; ====================================
+(with-eval-after-load 'ox-latex
+  (add-to-list 'org-latex-classes
+	       '("letter"
+		 "\\documentclass{letter}"
+		 ("\\section{%s}" . "\\section*{%s}")
+		 ("\\subsection{%s}" . "\\subsection*{%s}")
+		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+
 ;; ==================================
 ;; ====== ORG LaTeX SUBFIGURES ======
 ;; ==================================
-
 ;; Only good if the figures already have the same aspect ratio
 (use-package ox-latex-subfigure
   :ensure t
@@ -1117,18 +1127,18 @@ There are two things you can do about this warning:
 ;; =============================
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; IMPORTANT: Don't forget anything assigend to C-i is automatically assigned to TAB
-(global-set-key (kbd "C-:") 'goto-line); Quasi-Vim choice for reaching a line
+(global-set-key (kbd "C-c :") 'goto-line); Quasi-Vim choice for reaching a line
 (global-set-key (kbd "C-S-a") 'ansi-term); Terminal emulator
 (global-set-key (kbd "C-S-c") 'clean); Kill the buffer (and the window if not unique)
 (global-set-key (kbd "C-S-s") 'eshell); Emacs shell: Emacs Lisp interpreter is there
+(global-set-key (kbd "C-c -'") 'forward-word)
+(global-set-key (kbd "C-c ;") 'backward-word)
 (global-set-key (kbd "C-c C-l") 'magit-log-buffer-file); Summon git history for file in buffer
 (global-set-key (kbd "C-c b") 'previous-buffer)
 (global-set-key (kbd "C-c c") 'kill-ring-save); Copy text
 (global-set-key (kbd "C-c n") 'next-buffer)
 (global-set-key (kbd "C-c r") 'reload-config); Reload configuration
 (global-set-key (kbd "C-c s") 'create-scratch-buffer); Create scratch or swith to existing
-(global-set-key (kbd "C-;") 'forward-word)
-(global-set-key (kbd "C-u") 'backward-word)
 (global-set-key (kbd "C-x C-b") 'ibuffer); A buffer to rule them all
 (global-set-key (kbd "C-x b") 'ivy-switch-buffer); Replace default buffer switching
 (global-set-key (kbd "H-b") 'backward-word)
