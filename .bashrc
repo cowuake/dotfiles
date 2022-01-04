@@ -22,11 +22,6 @@ if [ -f ~/.Xresources ] ; then
     xrdb ~/.Xresources
 fi
 
-# Source global definitions
-if [ -f /etc/bashrc ] ; then
-    . /etc/bashrc
-fi
-
 # Search for additional local content (e.g., company-related stuff)
 if [ -f ~/.addenda ] ; then
     . ~/.addenda
@@ -288,6 +283,8 @@ alias ...="cd ../../"
 alias ....="cd ../../../"
 alias battery-state="sudo tlp-stat -b"
 alias bibmerge="bibtool -s -d"
+alias cpp="cp -a" # copy in archive mode (preserves permissions)
+alias disks="df -hT"
 alias e="emacsclient"
 alias ee="emacsclient -nw"
 alias et="emacs -nw"
@@ -299,10 +296,11 @@ alias gp="gnuplot"
 alias h="htop"
 alias kernel="echo '$KERNEL'"
 alias k="echo '$KERNEL'"
-alias l="ls -lah"
+alias l="ls -ahl"
 alias lf="ls -d */"
-alias ll="ls -lahtr"
-alias lll="ls -lahSr"
+alias ll="ls -ahlrt"
+alias lll="ls -ahlrS"
+alias mnt="findmnt"
 alias myhtop="htop -u $USER"
 alias mytop="top -u $USER"
 alias o="xdg-open"
