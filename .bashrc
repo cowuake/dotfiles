@@ -22,6 +22,11 @@ if [ -f ~/.Xresources ] ; then
     xrdb ~/.Xresources
 fi
 
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
 # Search for additional local content (e.g., company-related stuff)
 if [ -f ~/.addenda ] ; then
     . ~/.addenda
@@ -281,7 +286,7 @@ function update-distro() {
 alias ..="cd ../"
 alias ...="cd ../../"
 alias ....="cd ../../../"
-alias battery-state="sudo tlp-stat -b"
+alias battery_state="sudo tlp-stat -b"
 alias bibmerge="bibtool -s -d"
 alias cpp="cp -a" # copy in archive mode (preserves permissions)
 alias disks="df -hT"
@@ -291,11 +296,12 @@ alias et="emacs -nw"
 alias ewe="emacs --daemon"
 alias feh="feh --scale-down --auto-zoom"
 alias freecache="sudo su -c 'sync; echo 1 > /proc/sys/vm/drop_caches'"
-alias generate-ssh-key="ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/id_ed25519"
+alias generate_ssh_key="ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/id_ed25519"
 alias gp="gnuplot"
 alias h="htop"
 alias kernel="echo '$KERNEL'"
 alias k="echo '$KERNEL'"
+alias is_login_shell="shopt login_shell | cut -f 2"
 alias l="ls -ahl"
 alias lf="ls -d */"
 alias ll="ls -ahlrt"
@@ -307,10 +313,10 @@ alias o="xdg-open"
 alias open="xdg-open"
 alias random="apg -MSNCL -m 5 -x 10 | head -n 1"
 alias reboot="systemctl reboot"
-alias remotesync-old="rsync-old -az --no-i-r"
+alias remotesync_old="rsync-old -az --no-i-r"
 alias remotesync="/usr/bin/env rsync -az --info=progress2 --no-i-r"
 alias reswap="sudo swapoff -a && sudo swapon -a"
-alias rsync-old="/usr/bin/env rsync --no-i-r"
+alias rsync_old="/usr/bin/env rsync --no-i-r"
 alias rsync="/usr/bin/env rsync --info=progress2 --no-i-r"
 alias sc="screen"
 alias space="du -h --max-depth=1 | sort -h"
@@ -320,7 +326,7 @@ alias temp="sensors"
 alias tf="tail -f"
 alias ud="update-distro"
 alias uf="fwupdmgr get-devices && fwupdmgr refresh --force && fwupdmgr update"
-alias update-firmwares="fwupdmgr get-devices && fwupdmgr refresh --force && fwupdmgr update"
+alias update_firmwares="fwupdmgr get-devices && fwupdmgr refresh --force && fwupdmgr update"
 alias vc="sudo vpnc"
 alias vd="sudo vpnc-disconnect"
 alias vi="vim"
@@ -337,15 +343,15 @@ alias gout="git push"
 # =======================
 # ====== Hardware  ======
 # =======================
-alias cpu-boost-off="echo 0 | sudo tee /sys/devices/system/cpu/cpufreq/boost"
-alias cpu-boost-on="echo 1 | sudo tee /sys/devices/system/cpu/cpufreq/boost"
-alias cpu-boost="cat /sys/devices/system/cpu/cpufreq/boost"
-alias cpu-frequency="lscpu | grep MHz"
-alias governor-conservative="sudo cpupower frequency-set -g conservative"
-alias governor-ondemand="sudo cpupower frequency-set -g ondemand"
-alias governor-performance="sudo cpupower frequency-set -g performance"
-alias governor-powersave="sudo cpupower frequency-set -g powersave"
-alias governor-schedutil="sudo cpupower frequency-set -g schedutil"
+alias cpu_boost_off="echo 0 | sudo tee /sys/devices/system/cpu/cpufreq/boost"
+alias cpu_boost_on="echo 1 | sudo tee /sys/devices/system/cpu/cpufreq/boost"
+alias cpu_boost="cat /sys/devices/system/cpu/cpufreq/boost"
+alias cpu_frequency="lscpu | grep MHz"
+alias governor_conservative="sudo cpupower frequency-set -g conservative"
+alias governor_ondemand="sudo cpupower frequency-set -g ondemand"
+alias governor_performance="sudo cpupower frequency-set -g performance"
+alias governor_powersave="sudo cpupower frequency-set -g powersave"
+alias governor_schedutil="sudo cpupower frequency-set -g schedutil"
 alias governor="cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
 
 # =============================================
@@ -361,8 +367,8 @@ alias v="cd ~/Videos"
 # =====================
 # ====== Desktop ======
 # =====================
-alias gnome-external-keyboard="gsettings set org.gnome.desktop.input-sources xkb-options \"['compose:ralt']\""
-alias gnome-internal-keyboard="gsettings set org.gnome.desktop.input-sources xkb-options \"['lv3:ralt_switch', 'altwin:swap_alt_win', 'compose:ralt', 'ctrl:swapcaps_hyper']\""
+alias gnome_external_keyboard="gsettings set org.gnome.desktop.input-sources xkb-options \"['compose:ralt']\""
+alias gnome_internal_keyboard="gsettings set org.gnome.desktop.input-sources xkb-options \"['lv3:ralt_switch', 'altwin:swap_alt_win', 'compose:ralt', 'ctrl:swapcaps_hyper']\""
 
 # ====================
 # ====== Python ======
@@ -372,10 +378,10 @@ alias anaconda3="$HOME/anaconda3/bin/python"
 alias conda2="$HOME/anaconda2/bin/conda"
 alias conda3="$HOME/anaconda3/bin/conda"
 
-alias anaconda2-update-consistent="conda2 update anaconda"
-alias anaconda3-update-consistent="conda3 update anaconda"
-alias anaconda2-update-newest="conda2 update conda && conda2 update --all"
-alias anaconda3-update-newest="conda3 update conda && conda3 update --all"
+alias anaconda2_update_consistent="conda2 update anaconda"
+alias anaconda3_update_consistent="conda3 update anaconda"
+alias anaconda2_update_newest="conda2 update conda && conda2 update --all"
+alias anaconda3_update_newest="conda3 update conda && conda3 update --all"
 
 # =====================================================
 # ====== Games and other (invasive) applications ======
@@ -395,30 +401,30 @@ alias mesh="~/$GIT_REPOS_DIR/SU2_functionalUtilities/mesh.jl"
 # ====== PERL ONE-LINERS (I.E., ADDITIONAL ALIASES...) ======
 # ===========================================================
 # Not escaped version: perl -e 'rename$_,y/ /_/drfor<"* *">'
-alias adjust-filenames="perl -e 'rename\$_,y/ /_/drfor<\"* *\">'"
+alias adjust_filenames="perl -e 'rename\$_,y/ /_/drfor<\"* *\">'"
 
 # ============================================================
 # ====== FEDORA ADDITIONS (I.E., ADDITIONAL ALIASES...) ======
 # ============================================================
 
 if [[ -f "/etc/os-release" && on-fedora ]] ; then
-    alias fedora-dnf-reset="sudo dnf clean all && sudo dnf makecache --refresh -v"
-    alias fedora-enable-chez-scheme="sudo dnf copr enable superboum/chez-scheme"
-    alias fedora-enable-tdlib-fresh="sudo dnf copr enable carlis/tdlib-fresh"
-    alias fedora-enable-tlprepo="sudo dnf in https://repo.linrunner.de/fedora/tlp/repos/releases/tlp-release.fc$(rpm -E %fedora).noarch.rpm"
-    alias fedora-enable-rpmfusion="sudo dnf in https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+    alias fedora_dnf_reset="sudo dnf clean all && sudo dnf makecache --refresh -v"
+    alias fedora_enable_chez_scheme="sudo dnf copr enable superboum/chez-scheme"
+    alias fedora_enable_tdlib_fresh="sudo dnf copr enable carlis/tdlib-fresh"
+    alias fedora_enable_tlprepo="sudo dnf in https://repo.linrunner.de/fedora/tlp/repos/releases/tlp-release.fc$(rpm -E %fedora).noarch.rpm"
+    alias fedora_enable_rpmfusion="sudo dnf in https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
       https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
-    alias fedora-my-kernels="dnf list installed kernel"
-    alias fedora-my-packages="dnf repoquery --qf '%{name}' --userinstalled \
+    alias fedora_my_kernels="dnf list installed kernel"
+    alias fedora_my_packages="dnf repoquery --qf '%{name}' --userinstalled \
       | grep -v -- '-debuginfo$' \
       | grep -v '^\(kernel-modules\|kernel\|kernel-core\|kernel-devel\)$'"
-    alias fedora-my-repositories="dnf repolist enabled"
+    alias fedora_my_repositories="dnf repolist enabled"
 fi
 
 # ==========================================================
 # ====== RHEL ADDITIONS (I.E., ADDITIONAL ALIASES...) ======
 # ==========================================================
-alias rhel-awake-subscription="sudo subscription-manager remove --all; \
+alias rhel_awake_subscription="sudo subscription-manager remove --all; \
       		   	       sudo subscription-manager unregister; \
 			       sudo subscription-manager clean; \
 			       sudo subscription-manager register; \
@@ -440,9 +446,9 @@ alias rhel-awake-subscription="sudo subscription-manager remove --all; \
 
 SLURM_SBATCH_EXT=".sl"
 SLURM_JOB_NAME_ROOT="slurmjob"
-alias slurm-launch-all='for file in $(find . -type f -name "*$SLURM_SBATCH_EXT"); \
+alias slurm_launch_all='for file in $(find . -type f -name "*$SLURM_SBATCH_EXT"); \
       			    do sbatch "$file"; done'
-alias slurm-kill-all='for file in $(find . -type f -name "$SLURM_JOB_NAME_ROOT*"); \
+alias slurm_kill_all='for file in $(find . -type f -name "$SLURM_JOB_NAME_ROOT*"); \
       	       		  do scancel $(echo $file | tr -d -c 0-9); done'
 
 function slurm-launch-su2() {
@@ -565,17 +571,17 @@ alias squeue="squeue --format='%.10i %.10P %20j %10u %.10T %.10M %20N'"
 
 SU2_PREFIX=$HOME
 
-alias su2-build="./meson.py build --buildtype=release -Dwith-omp=true \
+alias su2_build="./meson.py build --buildtype=release -Dwith-omp=true \
       --prefix=$SU2_PREFIX && ./ninja -C build install"
 
-alias su2-build-debug="./meson.py build --buildtype=debug -Dwith-omp=true \
+alias su2_build_debug="./meson.py build --buildtype=debug -Dwith-omp=true \
       --prefix=$SU2_PREFIX && ./ninja -C build install"
 
-alias su2-rebuild="./meson.py build --reconfigure --buildtype=release -Dwith-omp=true \
+alias su2_rebuild="./meson.py build --reconfigure --buildtype=release -Dwith-omp=true \
       --prefix=$SU2_PREFIX && ./ninja -C build install"
 
-alias su2-rebuild-debug="./meson.py build --reconfigure --buildtype=debug -Dwith-omp=true \
+alias su2_rebuild_debug="./meson.py build --reconfigure --buildtype=debug -Dwith-omp=true \
       --prefix=$SU2_PREFIX && ./ninja -C build install"
 
-alias su2-clean-dir="find ./* -type f -not -name '*.cfg' -not -name '*.su2' -not -name '*.sl' -delete"
-alias su2-wipe-build="./meson.py setup --wipe build/"
+alias su2_clean_dir="find ./* -type f -not -name '*.cfg' -not -name '*.su2' -not -name '*.sl' -delete"
+alias su2_wipe_build="./meson.py setup --wipe build/"
