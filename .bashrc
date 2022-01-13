@@ -303,14 +303,18 @@ alias kernel="echo '$KERNEL'"
 alias k="echo '$KERNEL'"
 alias is_login_shell="shopt login_shell | cut -f 2"
 alias l="ls -ahl"
+alias ld="lsd -ahl"
 alias lf="ls -d */"
 alias ll="ls -ahlrt"
+alias lld="lsd -ahlrt"
 alias lll="ls -ahlrS"
+alias llld="lsd -ahlrS"
 alias mnt="findmnt"
 alias myhtop="htop -u $USER"
 alias mytop="top -u $USER"
 alias o="xdg-open"
 alias open="xdg-open"
+alias q="cd"
 alias random="apg -MSNCL -m 5 -x 10 | head -n 1"
 alias reboot="systemctl reboot"
 alias remotesync_old="rsync-old -az --no-i-r"
@@ -367,8 +371,10 @@ alias v="cd ~/Videos"
 # =====================
 # ====== Desktop ======
 # =====================
-alias gnome_external_keyboard="gsettings set org.gnome.desktop.input-sources xkb-options \"['compose:ralt']\""
-alias gnome_internal_keyboard="gsettings set org.gnome.desktop.input-sources xkb-options \"['lv3:ralt_switch', 'altwin:swap_alt_win', 'compose:ralt', 'ctrl:swapcaps_hyper']\""
+alias gnome_hhkb_mode="gsettings set org.gnome.desktop.input-sources \
+      xkb-options \"['compose:rsuper', 'compose:rwin']\""
+alias gnome_thinkpad_mode="gsettings set org.gnome.desktop.input-sources \
+      xkb-options \"['lv3:ralt_switch', 'altwin:swap_alt_win', 'compose:ralt', 'ctrl:swapcaps_hyper']\""
 
 # ====================
 # ====== Python ======
