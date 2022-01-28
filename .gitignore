@@ -1,0 +1,8 @@
+*
+!.gitignore
+!.config/mpv/mpv.conf
+!.bashrc
+!.emacs
+!.screenrc
+!.tmux.conf
+!.README.md
