@@ -7,7 +7,7 @@
 ;;  ╚██████╔╝██║ ╚████║╚██████╔╝    ███████╗██║ ╚═╝ ██║██║  ██║╚██████╗███████║
 ;;   ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝     ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Note: the font above is ANSI Shadow
+;; NOTE: the font above is ANSI Shadow
 
 
 ;; =========================
@@ -551,7 +551,8 @@ There are two things you can do about this warning:
 ;; ===================
 ;; ====== RUST  ======
 ;; ===================
-
+;;
+;; WARNING: Remember to install rust-src for the analyzer!
 (use-package lsp-mode
   :ensure t
   :commands lsp
