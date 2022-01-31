@@ -213,22 +213,6 @@ function on-classic-linux() {
     fi
 }
 
-function on-fedora() {
-    on-classic-linux "Fedora"
-}
-
-function on-debian() {
-    on-classic-linux "Debian GNU/Linux"
-}
-
-function on-tumbleweed() {
-    on-classic-linux "openSUSE Tumbleweed"
-}
-
-function on-leap() {
-    on-classic-linux "openSUSE Leap"
-}
-
 function on-guix() {
     if [[ -n "$GUIX_LOCPATH" ]]; then
 	return 0
@@ -240,26 +224,31 @@ function on-guix() {
 function update-distro() {
     OPTION=$1
     SESSION=UPDATE
+    FOUND_DISTRO=0
 
     if on-classic-linux ; then
-	if on-fedora ; then
+	# NOTE: In a future Fedora release, yum might stop being an alias for dnf
+	#if [ -f "/etc/redhat-release" ] ; then # for Fedora, CentOS [Stream], RHEL
+	if on-classic-linux "Fedora Linux" ] ; then # for Fedora, CentOS [Stream], RHEL
 	    if [[ $OPTION == "fast" ]] ; then
-		UPDATE_CMD="sudo dnf upgrade"
+		UPDATE_CMD="sudo yum upgrade"
 	    else
-		UPDATE_CMD="sudo dnf upgrade --refresh"
+		UPDATE_CMD="sudo yum upgrade --refresh"
 	    fi
-	elif on-debian ; then
+	    FOUND_DISTRO=1
+	elif on-classic-linux "Debian GNU/Linux" ; then
 	    UPDATE_CMD="sudo apt update && sudo apt upgrade"
-	elif on-tumbleweed ; then
+	    FOUND_DISTRO=1
+	elif on-classic-linux "openSUSE Tumbleweed" ; then
 	    if [[ $OPTION == "fast" ]] ; then
 		UPDATE_CMD="sudo zypper dup --allow-vendor-change"
 	    else
 		UPDATE_CMD="sudo zypper refresh && sudo zypper dup --allow-vendor-change"
 	    fi
-	elif on-leap ; then
+	    FOUND_DISTRO=1
+	elif on-classic-linux "openSUSE Leap" ; then
 	    UPDATE_CMD="sudo zypper up"
-	else
-	    echo -e "\n\tCommand not set for the distribution in use.\n"
+	    FOUND_DISTRO=1
 	fi
     elif [[ ! -f "/etc/os-release" ]] ; then
 	if on-guix ; then
@@ -267,12 +256,18 @@ function update-distro() {
 	else
 	    echo -e "\n\tCommand not set for the distribution in use.\n"
 	fi
+	FOUND_DISTRO=1
     fi
 
-    tmux new-session -d -s $SESSION
+    # Execute update in a Tmux session if the distro in use is supported
+    if [ $FOUND_DISTRO = 1 ] ; then
+	tmux new-session -d -s $SESSION
 
-    tmux send-keys "$UPDATE_CMD" C-m
-    tmux attach-session -t $SESSION
+	tmux send-keys "$UPDATE_CMD" C-m
+	tmux attach-session -t $SESSION
+    else
+	echo "update-distro: the function does not support the distro in use."
+    fi
 }
 
 
