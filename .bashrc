@@ -228,8 +228,7 @@ function update-distro() {
 
     if on-classic-linux ; then
 	# NOTE: In a future Fedora release, yum might stop being an alias for dnf
-	#if [ -f "/etc/redhat-release" ] ; then # for Fedora, CentOS [Stream], RHEL
-	if on-classic-linux "Fedora Linux" ] ; then # for Fedora, CentOS [Stream], RHEL
+	if on-classic-linux "Fedora Linux" ; then # for Fedora, CentOS [Stream], RHEL
 	    if [[ $OPTION == "fast" ]] ; then
 		UPDATE_CMD="sudo yum upgrade"
 	    else
@@ -270,6 +269,19 @@ function update-distro() {
     fi
 }
 
+# ============================
+# ====== PDF Facilities ======
+# ============================
+function pdf-rm-annots() {
+    OLD_FNAME=$1
+    if [[ $OLD_FNAME != "" && $OLD_FNAME != " " ]]; then
+	NEW_FNAME=$(echo $OLD_FNAME | sed -e 's/\.[^.]*$/_no-annots&/')
+	pdftk $OLD_FNAME output - uncompress \
+	    | sed '/^\/Annots/d' \
+	    | pdftk - output $NEW_FNAME compress \
+	    && echo "SUCCESS! Produced file $NEW_FNAME."
+    fi
+}
 
 ####################################################
 # =================================================
