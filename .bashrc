@@ -44,20 +44,24 @@ fi
 # =====================
 ### This replaces directives usually specified in ~/.inputrc
 
+### Key bindings
 bind '"\e[28~":""'
-#bind '"\e[A": history-search-backward' # up arrow
-#bind '"\e[B": history-search-forward' # down arrow
 bind '"\C-p": history-search-backward'
 bind '"\C-n": history-search-forward'
-#bind '"\e[C": forward-char' # right arrow
-#bind '"\e[D": backward-char' # left arrow
 bind '"\C-f": forward-char'
 bind '"\C-b": backward-char'
+bind '"\C-H": shell-backward-kill-word' # Ctrl-Backspace in alternative to Ctrl-W
+
+### Deprecated key bindings (kept because who knows...)
+#bind '"\e[A": history-search-backward' # up arrow
+#bind '"\e[B": history-search-forward' # down arrow
+#bind '"\e[C": forward-char' # right arrow
+#bind '"\e[D": backward-char' # left arrow
 
 # Say no to annoying beeps/flashes!
 bind 'set bell-style none'
 
-# See https://www.topbug.net/blog/2017/07/31/inputrc-for-humans/
+### See https://www.topbug.net/blog/2017/07/31/inputrc-for-humans/
 bind 'set colored-stats On'
 bind 'set completion-ignore-case On'
 bind 'set completion-prefix-display-length 3'
@@ -73,6 +77,7 @@ bind 'set visible-stats On'
 
 HISTSIZE=1000000
 HISTFILESIZE=1000000000
+HISTTIMEFORMAT='%F %T '
 
 # Avoid duplicates
 HISTCONTROL=ignoredups:erasedups
