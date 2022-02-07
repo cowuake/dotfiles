@@ -359,6 +359,8 @@ alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
 alias gc="git commit"
 alias gin="git pull"
 alias gout="git push"
+alias update_clones='for d in $GIT_CLONES_DIR/*/ ; \
+      			 do (cd $d; echo "### Entered $d."; git pull); done'
 
 # =======================
 # ====== Hardware  ======
