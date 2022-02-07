@@ -344,9 +344,10 @@ alias t="tmux"
 alias ta="tmux attach-session"
 alias temp="sensors"
 alias tf="tail -f"
-alias ud="update-distro"
-alias uf="fwupdmgr get-devices && fwupdmgr refresh --force && fwupdmgr update"
+alias update_distro="update-distro"
+alias ud="update_distro"
 alias update_firmwares="fwupdmgr get-devices && fwupdmgr refresh --force && fwupdmgr update"
+alias uf="update_firmwares"
 alias vc="sudo vpnc"
 alias vd="sudo vpnc-disconnect"
 alias vi="vim"
@@ -361,6 +362,7 @@ alias gin="git pull"
 alias gout="git push"
 alias update_clones='for d in $GIT_CLONES_DIR/*/ ; \
       			 do (cd $d; echo "### Entered $d."; git pull); done'
+alias uc="update_clones"
 
 # =======================
 # ====== Hardware  ======
