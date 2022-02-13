@@ -76,7 +76,8 @@
 ;(setq theme-light 'sanityinc-tomorrow-day)
 ;(setvar theme-dark 'nord)
 (setvar theme-light 'gruvbox-light-medium)
-(setvar theme-dark 'sanityinc-tomorrow-eighties)
+;(setvar theme-dark 'sanityinc-tomorrow-eighties)
+(setvar theme-dark 'monokai-pro-machine)
 
 ;; ====== GEOMETRY ======
 (setvar geometry-width 110)
