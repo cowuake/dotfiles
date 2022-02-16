@@ -289,7 +289,9 @@ or switch to the buffer if it already exists"
 	   (set-face-attribute 'default t :font font-windows)
 	 (set-default-font font-windows))))
 
-(load-dark-theme)
+;; SET DEFAULT THEME (LIGHT OR DARK)
+;(load-dark-theme)
+(load-light-theme)
 
 ;;;; Suppress unused interface components
 ;(toggle-scroll-bar -1); Disable the scrollbar
