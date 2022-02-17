@@ -1,14 +1,44 @@
 {
     "output": {
-        "autogain": {
-            "input-gain": -3.0,
+        "bass_enhancer": {
+            "amount": 5.0,
+            "blend": 0.0,
+            "floor": 20.0,
+            "floor-active": false,
+            "harmonics": 8.5,
+            "input-gain": 0.0,
             "output-gain": 0.0,
-            "reference": "Geometric Mean",
-            "target": -9.99999999999998
+            "scope": 80.0
         },
         "blocklist": [],
+        "compressor": {
+            "attack": 20.0,
+            "boost-amount": 6.0,
+            "boost-threshold": -72.0,
+            "hpf-frequency": 10.0,
+            "hpf-mode": "off",
+            "input-gain": 0.0,
+            "knee": -6.0,
+            "lpf-frequency": 20000.0,
+            "lpf-mode": "off",
+            "makeup": 0.0,
+            "mode": "Boosting",
+            "output-gain": 0.0,
+            "ratio": 4.0,
+            "release": 100.0,
+            "release-threshold": -120.0,
+            "sidechain": {
+                "lookahead": 0.0,
+                "mode": "RMS",
+                "preamp": 0.0,
+                "reactivity": 10.0,
+                "source": "Middle",
+                "type": "Feed-forward"
+            },
+            "threshold": -12.0
+        },
         "equalizer": {
-            "input-gain": -0.3,
+            "input-gain": 0.0,
             "left": {
                 "band0": {
                     "frequency": 22.59,
@@ -313,7 +343,7 @@
             },
             "mode": "SPM",
             "num-bands": 30,
-            "output-gain": -6.5,
+            "output-gain": 0.0,
             "right": {
                 "band0": {
                     "frequency": 22.59,
@@ -650,7 +680,8 @@
         "plugins_order": [
             "equalizer",
             "exciter",
-            "autogain",
+            "bass_enhancer",
+            "compressor",
             "limiter"
         ]
     }
