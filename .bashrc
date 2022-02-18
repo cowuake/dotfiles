@@ -288,6 +288,20 @@ function pdf-rm-annots() {
     fi
 }
 
+# ==================================================
+# ====== Frequent file conversions (shorties) ======
+# ==================================================
+function convert-webm-to-mp4() {
+    if [[ "${1: -5}" == ".webm" ]]; then
+	OLD_NAME=$1
+	NEW_NAME="${OLD_NAME%.*}.mp4"
+	ffmpeg -fflags +genpts -i $OLD_NAME -r 24 $NEW_NAME
+    else
+	echo "Not a webm file!"
+    fi
+}
+
+
 ####################################################
 # =================================================
 # ====== ALIASES TO BE USED ON EVERY MACHINE ======
