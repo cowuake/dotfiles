@@ -2,6 +2,7 @@
 !.gitignore
 !.config_bootstrap.sh
 !.config/mpv/mpv.conf
+!.config/pipewire/client.conf
 !.bashrc
 !.emacs
 !.screenrc

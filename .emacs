@@ -464,6 +464,19 @@ There are two things you can do about this warning:
   :ensure t
   )
 
+
+;; ================
+;; ====== C# ======
+;; ================
+;; Not exactly functional at the moment, going to do some research when enough time
+
+(use-package csharp-mode
+  :ensure t
+  :ensure omnisharp
+  :hook (csharp-mode . omnisharp-mode)
+  )
+
+
 ;; ===================================
 ;; ====== ELPY (PYTHON COMFORT) ======
 ;; ===================================
@@ -497,7 +510,8 @@ There are two things you can do about this warning:
 	      [remap completion-at-point] 'counsel-irony)
 	    (define-key irony-mode-map
 	      [remap complete-symbol] 'counsel-irony))
-  :hook ((c++-mode . irony-mode)
+  :hook (
+	 (c++-mode . irony-mode)
 	 (c-mode . irony-mode)
 	 (objc-mode . irony-mode)
 	 (irony-mode . my-irony-mode-hook)
@@ -690,7 +704,8 @@ There are two things you can do about this warning:
   :ensure company-irony
   :ensure company-irony-c-headers
   :hook (after-init . global-company-mode)
-  :custom ((company-idle-delay 0.5)
+  :custom (
+	   (company-idle-delay 0.5)
 	   (company-tooltip-align-annotations t) ;; Added for Rust
 	   (company-minimum-prefix-length 1) ;; Added for Rust
 	   )
@@ -705,7 +720,8 @@ There are two things you can do about this warning:
 	    (mapcar 'add-company-backend my-company-backends))
   :bind (:map company-active-map
 	      ("C-n" . 'company-select-next)
-	      ("C-p" . 'company-select-previous))
+	      ("C-p" . 'company-select-previous)
+	      )
   )
 
 
@@ -726,7 +742,8 @@ There are two things you can do about this warning:
   :ensure t
   :init (counsel-projectile-mode)
   :bind (:map projectile-mode-map
-	      ("C-c p" . 'projectile-commander))
+	      ("C-c p" . 'projectile-commander)
+	      )
   :custom (projectile-use-git-grep 1)
   )
 
@@ -752,7 +769,8 @@ There are two things you can do about this warning:
 	 (:map dired-mode-map
 	       ;; Make dired open in the same window when using RET or ^
 	       ("RET" . 'dired-find-alternate-file); was dired-advertised-find-file
-	       ("^" . (lambda () (interactive) (find-alternate-file ".."))))); was dired-up-directory
+	       ("^" . (lambda () (interactive) (find-alternate-file "..")))); was dired-up-directory
+	 )
   :custom (dired-sidebar-one-instance-p t)
   )
 
@@ -767,9 +785,12 @@ There are two things you can do about this warning:
 (use-package flycheck
   :ensure t
   :config (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
-  :custom ((flycheck-check-syntax-automatically '(save new-line))
-	   (flycheck-display-errors-delay .9))
-  :hook ((prog-mode . flycheck-mode)
+  :custom (
+	   (flycheck-check-syntax-automatically '(save new-line))
+	   (flycheck-display-errors-delay .9)
+	   )
+  :hook (
+	 (prog-mode . flycheck-mode)
 	 (c++-mode . flycheck-mode)
 	 (c-mode . flycheck-mode)
 	 (objc-mode . flycheck-mode)
@@ -815,18 +836,27 @@ There are two things you can do about this warning:
   :ensure swiper
   ;;:if window-system
   :magic ("%PDF" . pdf-view-mode)
-  :bind ((:map pdf-outline-buffer-mode-map
+  :bind (
+	 (:map pdf-outline-buffer-mode-map
 	      ("RET" . 'pdf-outline-follow-link-and-quit)
-	      ("M-RET" . 'pdf-outline-follow-link))
+	      ("M-RET" . 'pdf-outline-follow-link)
+	      )
 	 (:map pdf-view-mode-map
-	       ("C-q" . isearch-forward))
+	       ("j" . pdf-view-next-line-or-next-page)
+	       ("k" . pdf-view-previous-line-or-previous-page)
+	       ("C-q" . isearch-forward)
+	       )
 	 )
   :config (pdf-tools-install :no-query)
-  :custom ((pdf-cache-prefetch-delay 0.2); Previously 0.15, then 0.05, then 0.5, then 0.2
+  :custom (
+	   (pdf-cache-prefetch-delay 0.2); Previously 0.15, then 0.05, then 0.5, then 0.2
 	   (image-cache-eviction-delay 400); Previously 360, then 160, then 1000
-	   (pdf-view-use-scaling t))
-  :hook ((pdf-view-mode . (lambda() (blink-cursor-mode -1)))
-	 (pdf-view-mode . (lambda() (visual-line-mode -1))))
+	   (pdf-view-use-scaling t)
+	   )
+  :hook (
+	 (pdf-view-mode . (lambda() (blink-cursor-mode -1)))
+	 (pdf-view-mode . (lambda() (visual-line-mode -1)))
+	 )
   )
 
 ;; ==========================
@@ -858,7 +888,9 @@ There are two things you can do about this warning:
 
 (use-package swiper
   :ensure t
-  :bind (("C-s" . swiper))
+  :bind (
+	 ("C-s" . swiper)
+	 )
   :custom (ivy-display-style 'fancy)
   )
 
@@ -882,7 +914,8 @@ There are two things you can do about this warning:
 				     (when (telega-chat-bot-p telega-chatbuf--chat)
 				       '(telega-company-botcmd))))
 			(company-mode 1))))
-  :custom ((telega-use-images t)
+  :custom (
+	   (telega-use-images t)
 	   (telega-chat-show-avatars t)
 	   (telega-root-show-avatars t)
 	   (telega-user-show-avatars t)
@@ -944,13 +977,15 @@ There are two things you can do about this warning:
   :ensure t
   :ensure all-the-icons
   ;:config (all-the-icons-install-fonts)
-  :custom ((doom-modeline-buffer-encoding t)
+  :custom (
+	   (doom-modeline-buffer-encoding t)
 	   (doom-modeline-env-version t)
 	   ;(doom-modeline-icon (display-graphic-p))
 	   (doom-modeline-icon t)
 	   (doom-modeline-irc t)
 	   (doom-modeline-minor-modes t)
-	   (inhibit-compacting-font-caches t))
+	   (inhibit-compacting-font-caches t)
+	   )
   :hook (after-init . doom-modeline-mode)
   )
 
@@ -1035,15 +1070,19 @@ There are two things you can do about this warning:
 	    ;; Update PDF buffers after successful LaTeX runs
 	    (add-hook 'TeX-after-compilation-finished-functions
 		      #'TeX-revert-document-buffer))
-  :custom ((TeX-engine 'xetex)
+  :custom (
+	   (TeX-engine 'xetex)
 	   (reftex-plug-into-AUCTeX t)
 	   (reftex-extra-bindings t); C-c c is enough for citations
 	   (TeX-view-program-selection '((output-pdf "PDF Tools"))); Use pdf-tools to open PDF files
-	   (TeX-source-correlate-start-server t))
-  :hook ((LaTeX-mode turn-on-reftex)
+	   (TeX-source-correlate-start-server t)
+	   )
+  :hook (
+	 (LaTeX-mode turn-on-reftex)
 	 (Tex-mode . flyspell-mode); Enable spell check (not for comments)
 	 (Tex-mode . auto-complete)
-	 (Tex-mode . (lambda() (local-set-key [C-tab] 'TeX-complete-symbol))))
+	 (Tex-mode . (lambda() (local-set-key [C-tab] 'TeX-complete-symbol)))
+	 )
   )
 
 
@@ -1075,7 +1114,8 @@ There are two things you can do about this warning:
   :config (push '("\\.html\\'" . epiphany) org-file-apps)
   :config (remove-hook 'org-cycle-hook
 		       #'org-optimize-window-after-visibility-change)
-  :custom ((org-log-done 'time)
+  :custom (
+	   (org-log-done 'time)
 	   (org-hide-emphasis-markers t)
 	   (org-latex-listings 'minted)
 	   (org-latex-minted-options '(("autogobble=true")
@@ -1087,7 +1127,8 @@ There are two things you can do about this warning:
 	    '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
 	      "bibtex %b"
               "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-              "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
+              "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+	   )
   )
 
 
