@@ -63,9 +63,10 @@
   nil)
 
 ;; ====== FONTS ======
-(setvar font-linux "Source Code Pro")
-;(setq font-linux "Cascadia Code")
-(setvar font-linux-fallback "DejaVu Sans Mono")
+;(setvar font-linux "Source Code Pro")
+(setvar font-linux "Cascadia Code")
+;(setvar font-linux-fallback "DejaVu Sans Mono")
+(setvar font-linux-fallback "Source Code Pro")
 (setvar font-darwin "Monaco")
 (setvar font-darwin-fallback "Menlo")
 (setvar font-windows "Consolas")
