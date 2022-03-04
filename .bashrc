@@ -112,8 +112,8 @@ _bold="\001$(tput bold)\002"
 _reset="\001$(tput sgr0)\002"
 # Build the prompt
 PS1="$_bold$_cyan\[\w\]\n"
-PS1+="$_bold$_white[$_blue\u\[\e[m\]"
-PS1+="$_bold@$_red\h$_white]"
+PS1+="$_reset$_bold[$_blue\u\[\e[m\]"
+PS1+="$_bold@$_red\h$_reset$_bold]"
 PS1+="$_reset\$ "
 
 # =======================
