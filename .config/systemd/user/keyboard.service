@@ -1,0 +1,9 @@
+[Unit]
+Description=Manage connection and disconnection of a HHKB keyboard
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /home/rmura/.config/systemd/user/scripts/set-keyboard-mode.sh
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,10 @@
+[Unit]
+Description=Manage connection and disconnection of a HHKB keyboard
+
+[Timer]
+OnBootSec=1
+OnUnitActiveSec=1
+AccuracySec=1ms
+
+[Install]
+WantedBy=timers.target
