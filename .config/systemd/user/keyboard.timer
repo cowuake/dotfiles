@@ -4,7 +4,7 @@ Description=Manage connection and disconnection of a HHKB keyboard
 [Timer]
 OnBootSec=1
 OnUnitActiveSec=1
-AccuracySec=1ms
+AccuracySec=100ms
 
 [Install]
 WantedBy=timers.target
