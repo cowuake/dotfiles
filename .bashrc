@@ -17,24 +17,22 @@
 # ====== SOURCING ======
 # ======================
 
-# Source .Xresources if present
+sources=(
+    /etc/bashrc
+    ~/.addenda
+    ~/.cargo/env
+)
+
+for source in "${sources[@]}"
+do
+    if [ -f "$source" ] ; then
+	. "$source"
+    fi
+done
+
+# Better to handle .Xresources apart
 if [ -f ~/.Xresources ] ; then
     xrdb ~/.Xresources
-fi
-
-# Source global definitions
-if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
-fi
-
-# Search for additional local content (e.g., company-related stuff)
-if [ -f ~/.addenda ] ; then
-    . ~/.addenda
-fi
-
-# This is needed for rustup
-if [ -f $HOME/.cargo/env ] ; then
-    . "$HOME/.cargo/env"
 fi
 
 
