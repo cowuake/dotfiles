@@ -32,6 +32,11 @@ if [ -f ~/.addenda ] ; then
     . ~/.addenda
 fi
 
+# This is needed for rustup
+if [ -f $HOME/.cargo/env ] ; then
+    . "$HOME/.cargo/env"
+fi
+
 
 ###############################
 # ============================
@@ -628,4 +633,3 @@ alias su2_rebuild_debug="./meson.py build --reconfigure --buildtype=debug -Dwith
 
 alias su2_clean_dir="find ./* -type f -not -name '*.cfg' -not -name '*.su2' -not -name '*.sl' -delete"
 alias su2_wipe_build="./meson.py setup --wipe build/"
-. "$HOME/.cargo/env"
