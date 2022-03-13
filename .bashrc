@@ -387,12 +387,12 @@ alias cpu_boost_off="echo 0 | sudo tee /sys/devices/system/cpu/cpufreq/boost"
 alias cpu_boost_on="echo 1 | sudo tee /sys/devices/system/cpu/cpufreq/boost"
 alias cpu_boost="cat /sys/devices/system/cpu/cpufreq/boost"
 alias cpu_frequency="lscpu | grep MHz"
-alias governor_conservative="sudo cpupower frequency-set -g conservative"
-alias governor_ondemand="sudo cpupower frequency-set -g ondemand"
-alias governor_performance="sudo cpupower frequency-set -g performance"
-alias governor_powersave="sudo cpupower frequency-set -g powersave"
-alias governor_schedutil="sudo cpupower frequency-set -g schedutil"
-alias governor="cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
+alias cpu_governor_conservative="sudo cpupower frequency-set -g conservative"
+alias cpu_governor_ondemand="sudo cpupower frequency-set -g ondemand"
+alias cpu_governor_performance="sudo cpupower frequency-set -g performance"
+alias cpu_governor_powersave="sudo cpupower frequency-set -g powersave"
+alias cpu_governor_schedutil="sudo cpupower frequency-set -g schedutil"
+alias cpu_governor="cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
 
 # =============================================
 # ====== Frequently Accessed Directories ======
