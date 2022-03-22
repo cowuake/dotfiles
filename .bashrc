@@ -17,13 +17,13 @@
 # ====== SOURCING ======
 # ======================
 
-sources=(
+sources_files=(
     /etc/bashrc
     ~/.addenda
     ~/.cargo/env
 )
 
-for source in "${sources[@]}"
+for source in "${source_files[@]}"
 do
     if [ -f "$source" ] ; then
 	. "$source"
@@ -161,13 +161,24 @@ else
     fi
 fi
 
-### ADDITIONAL EXECUTABLES
-PATH=$HOME/bin:$PATH # Personal executable scripts
-PATH=$HOME/.julia/bin:$PATH # Julia binaries
+### ADDITIONS TO $PATH
+source_dirs=(
+    $HOME/bin                # personal executable files
+    $HOME/.julia/bin/        # Julia binaries
+    /usr/lib64/openmpi/bin   # OPENMPI binaries, e.g., mpicc, mpicxx
+    /usr/lib64/mpich/bin     # MPICH binaries, e.g., mpicc, mpicxx
+    /opt/mssql-tools/bin     # Microsoft SQL Server CLI utilities
+)
+
+for source in "${source_dirs[@]}"
+do
+    if [ -d "$source" ] ; then
+	PATH="$source":$PATH
+    fi
+done
+
 OPENMPI_INSTALL_DIR=/usr/lib64/openmpi
 MPICH_INSTALL_DIR=/usr/lib64/mpich
-PATH=/usr/lib64/openmpi/bin:$PATH # OPENMPI binaries, e.g., mpicc, mpicxx
-PATH=/usr/lib64/mpich/bin:$PATH # MPICH binaries, e.g., mpicc, mpicxx
 
 ### MATLAB
 PATH=$HOME/MATLAB/R2020b/bin:$PATH

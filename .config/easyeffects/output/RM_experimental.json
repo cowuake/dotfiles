@@ -4,7 +4,7 @@
             "input-gain": 0.0,
             "output-gain": 0.0,
             "reference": "Integrated",
-            "target": -12.99999999999999
+            "target": -16.999999999999993
         },
         "bass_enhancer": {
             "amount": 5.0,
