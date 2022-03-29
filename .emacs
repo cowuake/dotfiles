@@ -1158,7 +1158,10 @@ There are two things you can do about this warning:
 		 "\\documentclass{letter}"
 		 ("\\section{%s}" . "\\section*{%s}")
 		 ("\\subsection{%s}" . "\\subsection*{%s}")
-		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+		 )
+	       )
+  )
 
 ;; ==================================
 ;; ====== ORG LaTeX SUBFIGURES ======

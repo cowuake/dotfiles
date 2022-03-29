@@ -3,7 +3,7 @@
         "autogain": {
             "input-gain": 0.0,
             "output-gain": 0.0,
-            "reference": "Integrated",
+            "reference": "Geometric Mean (SI)",
             "target": -16.999999999999993
         },
         "bass_enhancer": {
@@ -15,6 +15,13 @@
             "input-gain": 0.0,
             "output-gain": 0.0,
             "scope": 80.0
+        },
+        "bass_loudness": {
+            "input-gain": 0.0,
+            "link": -9.1,
+            "loudness": -2.3999999999999995,
+            "output": -6.0,
+            "output-gain": 0.0
         },
         "blocklist": [],
         "equalizer": {
@@ -628,23 +635,13 @@
             },
             "split-channels": false
         },
-        "exciter": {
-            "amount": 4.000000000000007,
-            "blend": 0.0,
-            "ceil": 15500.0,
-            "ceil-active": true,
-            "harmonics": 4.000000000000016,
-            "input-gain": 0.0,
-            "output-gain": 0.0,
-            "scope": 5000.0
-        },
         "multiband_compressor": {
             "band0": {
                 "attack-threshold": -12.0,
                 "attack-time": 20.0,
                 "boost-amount": 6.0,
                 "boost-threshold": -72.0,
-                "compression-mode": "Downward",
+                "compression-mode": "Boosting",
                 "compressor-enable": true,
                 "external-sidechain": false,
                 "knee": -6.0,
@@ -860,10 +857,10 @@
         },
         "plugins_order": [
             "equalizer",
-            "exciter",
             "bass_enhancer",
             "autogain",
-            "multiband_compressor"
+            "multiband_compressor",
+            "bass_loudness"
         ]
     }
 }

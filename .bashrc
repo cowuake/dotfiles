@@ -168,6 +168,7 @@ source_dirs=(
     /usr/lib64/openmpi/bin   # OPENMPI binaries, e.g., mpicc, mpicxx
     /usr/lib64/mpich/bin     # MPICH binaries, e.g., mpicc, mpicxx
     /opt/mssql-tools/bin     # Microsoft SQL Server CLI utilities
+    /opt/mssql-tools18/bin   # Microsoft SQL Server CLI utilities (release 18)
 )
 
 for source in "${source_dirs[@]}"
