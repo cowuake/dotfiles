@@ -13,6 +13,7 @@
 # =========================
 # Riccardo Mura created and uses this configuration file
 
+
 # ======================
 # ====== SOURCING ======
 # ======================
@@ -20,6 +21,7 @@
 sources_files=(
     /etc/bashrc
     ~/.addenda
+    ~/aspnetcore_cert_info
     ~/.cargo/env
 )
 
@@ -287,6 +289,72 @@ function update-distro() {
     else
 	echo "update-distro: the function does not support the distro in use."
     fi
+}
+
+function fedora-dotnet-trust-dev-certs() {
+    CERTS_DIR=~/.certs
+
+    dotnet dev-certs https -ep $CERTS_DIR/by_dotnet.crt --format PEM
+    certutil -d sql:$HOME/.pki/nssdb -A -t "P,," -n localhost -i $CERTS_DIR/by_dotnet.crt
+    certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localhost -i $CERTS_DIR/by_dotnet.crt
+    sudo cp $CERTS_DIR/by_dotnet.crt /etc/pki/tls/certs/localhost.pem
+    sudo update-ca-trust
+
+    EASYRSA_DIR=~/.easyrsa
+
+    # Install easy-rsa if not already installed
+    if rpm -q easy-rsa | grep -q 'not installed'; then
+	sudo dnf in easy-rsa
+    fi
+
+    if ! [ -d $EASYRSA_DIR ]; then
+	mkdir $EASYRSA_DIR
+	chmod 700 $EASYRSA_DIR
+    fi
+
+    cd $EASYRSA_DIR
+    cp -r /usr/share/easy-rsa/3/* .
+    ./easyrsa init-pki
+
+    cat << EOF > vars
+set_var EASYRSA_REQ_COUNTRY    "US"
+set_var EASYRSA_REQ_PROVINCE   "Texas"
+set_var EASYRSA_REQ_CITY       "Houston"
+set_var EASYRSA_REQ_ORG        "Development"
+set_var EASYRSA_REQ_EMAIL      "local@localhost.localdomain"
+set_var EASYRSA_REQ_OU         "LocalDevelopment"
+set_var EASYRSA_ALGO           "ec"
+set_var EASYRSA_DIGEST         "sha512"
+EOF
+
+    ./easyrsa build-ca nopass
+    sudo cp ./pki/ca.crt /etc/pki/ca-trust/source/anchors/easyrsaca.crt
+    sudo update-ca-trust
+
+    if ! [ -d ./req ]; then
+	mkdir req
+    fi
+    cd req
+    openssl genrsa -out localhost.key
+    openssl req -new -key localhost.key -out localhost.req \
+	    -subj /C=US/ST=Texas/L=Houston/O=Development/OU=LocalDevelopment/CN=localhost
+    cd ../
+
+    ./easyrsa import-req ./req/localhost.req localhost
+    ./easyrsa sign-req server localhost
+
+    cd
+
+    mkdir $CERTS_DIR
+    cp $EASYRSA_DIR/pki/issued/localhost.crt $CERTS_DIR/localhost.crt
+    cp $EASYRSA_DIR/req/localhost.key $CERTS_DIR/localhost.key
+    cd $CERTS_DIR
+    openssl pkcs12 -export -out localhost.pfx -inkey localhost.key -in localhost.crt
+
+    echo
+    echo "The following environmental variables should be exported:"
+    echo "ASPNETCORE_Kestrel__Certificates__Default__Password"
+    echo "ASPNETCORE_Kestrel__Certificates__Default__Path (ponting to $CERTS_DIR/localhost.pfx"
 }
 
 # ============================

@@ -71,6 +71,7 @@
 (setvar font-darwin-fallback "Menlo")
 (setvar font-windows "Consolas")
 (setvar font-windows-fallback "Lucida Console")
+(set-face-attribute 'default nil :height 110)
 
 ;; ====== COLOR THEME ======
 ;(setvar theme-dark 'monokai-pro-ristretto)
@@ -568,6 +569,14 @@ There are two things you can do about this warning:
   )
 ;; NOTE: magit-diff-range for diffs between branches
 (use-package magit-delta
+  :ensure t
+  )
+
+
+;; ========================
+;; ====== POWERSHELL ======
+;; ========================
+(use-package powershell
   :ensure t
   )
 
