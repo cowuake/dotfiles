@@ -1,6 +1,0 @@
-[Desktop Entry]
-Terminal=false
-Name=EasyEffects
-Type=Application
-Esec=/usr/bin/killall easyeffects; /usr/bin/easyeffects --gapplication-service &
-Comment=Run EasyEffects as a service

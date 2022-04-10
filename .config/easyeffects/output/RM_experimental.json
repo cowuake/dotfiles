@@ -3,7 +3,7 @@
         "autogain": {
             "input-gain": 0.0,
             "output-gain": 0.0,
-            "reference": "Geometric Mean (SI)",
+            "reference": "Geometric Mean (MI)",
             "target": -16.999999999999993
         },
         "bass_enhancer": {
