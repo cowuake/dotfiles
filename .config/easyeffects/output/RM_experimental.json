@@ -1,11 +1,5 @@
 {
     "output": {
-        "autogain": {
-            "input-gain": 0.0,
-            "output-gain": 0.0,
-            "reference": "Geometric Mean (MI)",
-            "target": -16.999999999999993
-        },
         "bass_enhancer": {
             "amount": 5.0,
             "blend": 0.0,
@@ -858,9 +852,8 @@
         "plugins_order": [
             "equalizer",
             "bass_enhancer",
-            "autogain",
-            "multiband_compressor",
-            "bass_loudness"
+            "bass_loudness",
+            "multiband_compressor"
         ]
     }
 }
