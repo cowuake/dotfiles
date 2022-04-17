@@ -10,13 +10,6 @@
             "output-gain": 0.0,
             "scope": 80.0
         },
-        "bass_loudness": {
-            "input-gain": 0.0,
-            "link": -9.1,
-            "loudness": -2.3999999999999995,
-            "output": -6.0,
-            "output-gain": 0.0
-        },
         "blocklist": [],
         "equalizer": {
             "input-gain": 0.0,
@@ -629,13 +622,20 @@
             },
             "split-channels": false
         },
+        "maximizer": {
+            "ceiling": 0.0,
+            "input-gain": 0.0,
+            "output-gain": 0.0,
+            "release": 3.149999999999997,
+            "threshold": -3.0000000000000013
+        },
         "multiband_compressor": {
             "band0": {
                 "attack-threshold": -12.0,
                 "attack-time": 20.0,
                 "boost-amount": 6.0,
                 "boost-threshold": -72.0,
-                "compression-mode": "Boosting",
+                "compression-mode": "Downward",
                 "compressor-enable": true,
                 "external-sidechain": false,
                 "knee": -6.0,
@@ -852,8 +852,8 @@
         "plugins_order": [
             "equalizer",
             "bass_enhancer",
-            "bass_loudness",
-            "multiband_compressor"
+            "multiband_compressor",
+            "maximizer"
         ]
     }
 }
