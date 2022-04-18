@@ -441,6 +441,7 @@ alias steam_optimus="__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidi
 alias t="tmux"
 alias ta="tmux attach-session"
 alias temp="sensors"
+alias fan="temp | grep -i rpm"
 alias tf="tail -f"
 alias update_distro="update-distro"
 alias ud="update_distro"
