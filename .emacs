@@ -131,6 +131,64 @@
 ;; ==================================
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defun maximum (numbers)
+  (let ((len (length numbers)))
+    (cond ((equal len 1)
+	   (car numbers))
+	  ((equal len 2)
+	   (let ((first (car numbers))
+		 (last (cadr numbers)))
+	     (if (> first last)
+		 first
+	       last)))
+	  ((> len 2)
+	   (let ((first (car numbers))
+		 (second (cadr numbers)))
+	     (if (> first second)
+		 (max-in-list (cons (car numbers) (cddr numbers)))
+	       (max-in-list (cdr numbers))))))))
+
+(defun max-line-length (text)
+  (let ((lines (split-string text "\n")))
+    (maximum (mapcar (lambda (line) (length line)) lines))))
+
+(defun factorial (n)
+  (interactive "sInsert number: ")
+  (defun aux (n acc)
+     (if (equal n 1)
+	 acc
+       (aux (- n 1) (* n acc))))
+  (message (number-to-string (aux (string-to-number n) 1))))
+
+(defun repeat-string (source-string ntimes)
+  (defun aux (source-string ntimes acc)
+     (if (equal ntimes 1)
+	 (concat source-string acc)
+       (aux source-string (- ntimes 1) (concat source-string acc))))
+  (aux source-string ntimes ""))
+
+(defun prefix-lines (text prefix)
+  (let* ((lines (split-string text "\n"))
+	 (prefixed-lines (mapcar (lambda (line) (concat prefix line "\n")) lines)))
+    (apply 'concat prefixed-lines)))
+
+(defun econfig-header (header-text)
+  (let* ((header-line (concat "====== " header-text " ======"))
+	 (line-length (string-width header-line))
+	 (filler-line (repeat-string "=" line-length)))
+    (concat  filler-line "\n" header-line "\n" filler-line)))
+
+(defun econfig-insert-header (header-text)
+  (interactive "sInsert header string: ")
+  (insert (prefix-lines (econfig-header header-text) ";; ")))
+
+(defun econfig-insert-header-maxi (header-text)
+  (interactive "sInsert maxi-header string: ")
+  (let* ((header (econfig-header header-text))
+	 (line-length (+ (max-line-length header) 6))
+	 (additional-line (repeat-string ";" line-length)))
+    (insert (concat additional-line "\n" (prefix-lines header ";; ") additional-line))))
+
 (defun filter-string-list (source-list pattern)
   (cl-remove-if-not
    (lambda (item)
@@ -1027,15 +1085,6 @@ There are two things you can do about this warning:
 	   (inhibit-compacting-font-caches t)
 	   )
   :hook (after-init . doom-modeline-mode)
-  )
-
-
-;; ==================================
-;; ====== DREAM (COLOR SCHEME) ======
-;; ==================================
-
-(use-package dream-theme
-  :ensure t
   )
 
 
