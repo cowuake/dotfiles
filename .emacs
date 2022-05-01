@@ -78,9 +78,12 @@
 ;(setq theme-light 'sanityinc-tomorrow-day)
 ;(setvar theme-dark 'nord)
 ;(setvar theme-light 'gruvbox-light-medium)
-(setvar theme-light 'solarized-light)
+ ;(setvar theme-light 'solarized-light)
+(setvar theme-light 'one-light)
 ;(setvar theme-dark 'sanityinc-tomorrow-eighties)
-(setvar theme-dark 'monokai-pro-machine)
+;(setvar theme-dark 'monokai-pro-machine)
+;(setvar theme-dark 'zenburn)
+(setvar theme-dark 'creamsody)
 
 ;; ====== GEOMETRY ======
 (setvar geometry-width 110)
@@ -96,11 +99,11 @@
 ;; ====== C / C++ ======
 (setvar c-default-style "stroustrup")
 
-;; ====== SCHEME ======
+;; ====== LISP / SCHEME ======
 (defvar chicken-startup-lib "~/fluent-assistant/portable-core.scm"
   "Path to the library to be loaded when running CHICKEN Scheme via geiser.")
 (add-hook 'scheme-mode-hook 'show-paren-mode)
-;(add-hook 'scheme-mode-hook 'paredit-mode)
+(add-hook 'emacs-lisp-mode-hook 'show-paren-mode)
 
 ;; ====== PRETTIFY-SYMBOLS ======
 (add-hook 'scheme-mode-hook 'prettify-symbols-mode)
@@ -117,7 +120,7 @@
 ;;(setq package-load-list '((yasnippet nil) all))
 
 (add-hook 'server-switch-hook #'raise-frame)
-					;(add-hook 'server-switch-hook (lambda () (select-frame-set-input-focus (selected-frame))))
+;(add-hook 'server-switch-hook (lambda () (select-frame-set-input-focus (selected-frame))))
 
 (setq custom-file (concat user-emacs-directory "/custom.el"))
 
@@ -127,6 +130,12 @@
 ;; ====== FUNCTION DEFINITIONS ======
 ;; ==================================
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun filter-string-list (source-list pattern)
+  (cl-remove-if-not
+   (lambda (item)
+     (string-match item pattern))
+   source-list))
 
 (defun OTF (command name)
   "execute a process in a new terminal session On The Fly
@@ -266,6 +275,13 @@ or switch to the buffer if it already exists"
 ;    (setq package-quickstart t)
 ;  nil)
 
+;; ====== GConf INTERACTION ======
+;;;; PROBLEM
+;; The font is set according to Gnome defaults instead of enforcing settings specified below
+;;;; SEE
+;;https://emacs.stackexchange.com/questions/32641/something-changes-the-default-face-in-my-emacs/32664#32664
+(define-key special-event-map [config-changed-event] 'ignore);; Not workig at the moment...
+
 ;; ====== HISTORIES AND SESSIONS ======
 (savehist-mode 1); Persistent minibuffer history
 (when window-system
@@ -278,19 +294,19 @@ or switch to the buffer if it already exists"
   (cond ((gnu/linux?)
 	 (if (member font-linux (font-family-list))
 	     (if (>= emacs-major-version 27)
-		 (set-face-attribute 'default t :font font-linux)
+		 (set-face-attribute 'default t :family font-linux)
 	       (set-default-font font-linux))
 	   (if (member font-linux-fallback (font-family-list))
 	       (if (>= emacs-major-version 27)
-		   (set-face-attribute 'default t :font font-linux-fallback)
+		   (set-face-attribute 'default t :family font-linux-fallback)
 		 (set-default-font font-linux-fallback) nil))))
 	((darwin?)
 	 (if (>= emacs-major-version 27)
-	     (set-face-attribute 'default t :font font-darwin)
+	     (set-face-attribute 'default t :family font-darwin)
 	   (set-default-font font-darwin)))
 	((windows-nt?)
 	 (if (>= emacs-major-version 27)
-	     (set-face-attribute 'default t :font font-windows)
+	     (set-face-attribute 'default t :family font-windows)
 	   (set-default-font font-windows)))
 	)
   )
@@ -298,8 +314,8 @@ or switch to the buffer if it already exists"
 (set-font)
 
 ;; SET DEFAULT THEME (LIGHT OR DARK)
-;(load-dark-theme)
-(load-light-theme)
+(load-dark-theme)
+;(load-light-theme)
 
 ;;;; Suppress unused interface components
 ;(toggle-scroll-bar -1); Disable the scrollbar
@@ -984,6 +1000,15 @@ There are two things you can do about this warning:
 ;; =================================================
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; ======================================
+;; ====== CREAMSODY (COLOR SCHEME) ======
+;; ======================================
+
+(use-package creamsody-theme
+  :ensure t
+  )
+
+
 ;; ===========================
 ;; ====== DOOM-MODELINE ======
 ;; ===========================
@@ -1005,9 +1030,9 @@ There are two things you can do about this warning:
   )
 
 
-;; ========================================
+;; ==================================
 ;; ====== DREAM (COLOR SCHEME) ======
-;; ========================================
+;; ==================================
 
 (use-package dream-theme
   :ensure t
@@ -1032,11 +1057,20 @@ There are two things you can do about this warning:
   )
 
 
-;; ========================================
+;; =================================
 ;; ====== NORD (COLOR SCHEME) ======
-;; ========================================
+;; =================================
 
 (use-package nord-theme
+  :ensure t
+  )
+
+
+;; =================================
+;; ====== ONE (COLOR SCHEME) ======
+;; =================================
+
+(use-package one-themes
   :ensure t
   )
 
@@ -1063,6 +1097,14 @@ There are two things you can do about this warning:
 ;; ====== SOLARIZED (COLOR SCHEME) ======
 ;; ======================================
 (use-package solarized-theme
+  :ensure t
+  )
+
+;; ====================================
+;; ====== ZENBURN (COLOR SCHEME) ======
+;; ====================================
+
+(use-package zenburn-theme
   :ensure t
   )
 
