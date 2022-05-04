@@ -78,12 +78,12 @@
 ;(setq theme-light 'sanityinc-tomorrow-day)
 ;(setvar theme-dark 'nord)
 ;(setvar theme-light 'gruvbox-light-medium)
- ;(setvar theme-light 'solarized-light)
-(setvar theme-light 'one-light)
+(setvar theme-light 'solarized-light)
+;(setvar theme-light 'one-light)
 ;(setvar theme-dark 'sanityinc-tomorrow-eighties)
 ;(setvar theme-dark 'monokai-pro-machine)
-;(setvar theme-dark 'zenburn)
-(setvar theme-dark 'creamsody)
+(setvar theme-dark 'zenburn)
+;(setvar theme-dark 'creamsody)
 
 ;; ====== GEOMETRY ======
 (setvar geometry-width 110)
@@ -372,8 +372,8 @@ or switch to the buffer if it already exists"
 (set-font)
 
 ;; SET DEFAULT THEME (LIGHT OR DARK)
-(load-dark-theme)
-;(load-light-theme)
+;(load-dark-theme)
+(load-light-theme)
 
 ;;;; Suppress unused interface components
 ;(toggle-scroll-bar -1); Disable the scrollbar
