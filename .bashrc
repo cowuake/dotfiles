@@ -713,3 +713,14 @@ alias su2_rebuild_debug="./meson.py build --reconfigure --buildtype=debug -Dwith
 
 alias su2_clean_dir="find ./* -type f -not -name '*.cfg' -not -name '*.su2' -not -name '*.sl' -delete"
 alias su2_wipe_build="./meson.py setup --wipe build/"
+
+
+#######################################
+# ===================================
+# ====== AUTO-GENERATED STUFF  ======
+# ===================================
+#######################################
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
