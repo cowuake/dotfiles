@@ -63,8 +63,8 @@
   nil)
 
 ;; ====== FONTS ======
-;(setvar font-linux "Source Code Pro")
-(setvar font-linux "Cascadia Code")
+(setvar font-linux "Source Code Pro")
+;(setvar font-linux "Cascadia Code")
 ;(setvar font-linux-fallback "DejaVu Sans Mono")
 (setvar font-linux-fallback "Source Code Pro")
 (setvar font-darwin "Monaco")
@@ -82,7 +82,8 @@
 ;(setvar theme-light 'one-light)
 ;(setvar theme-dark 'sanityinc-tomorrow-eighties)
 ;(setvar theme-dark 'monokai-pro-machine)
-(setvar theme-dark 'zenburn)
+;(setvar theme-dark 'zenburn)
+(setvar theme-dark 'mood-one)
 ;(setvar theme-dark 'creamsody)
 
 ;; ====== GEOMETRY ======
@@ -372,8 +373,8 @@ or switch to the buffer if it already exists"
 (set-font)
 
 ;; SET DEFAULT THEME (LIGHT OR DARK)
-;(load-dark-theme)
-(load-light-theme)
+(load-dark-theme)
+;(load-light-theme)
 
 ;;;; Suppress unused interface components
 ;(toggle-scroll-bar -1); Disable the scrollbar
@@ -1093,6 +1094,15 @@ There are two things you can do about this warning:
 ;; ====================================
 
 (use-package gruvbox-theme
+  :ensure t
+  )
+
+
+;; ===========================================
+;; ====== MOOD-ONE-THEME (COLOR SCHEME) ======
+;; ===========================================
+
+(use-package mood-one-theme
   :ensure t
   )
 
