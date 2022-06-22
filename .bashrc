@@ -457,7 +457,8 @@ alias x="exit"
 # ====== Git ======
 # =================
 alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
-alias gc="git commit"
+alias gcmt="git commit"
+alias gckt="git checkout"
 alias gpl="git pull"
 alias gpsh="git push"
 alias gst="git status"
