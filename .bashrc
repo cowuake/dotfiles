@@ -371,6 +371,21 @@ function pdf-rm-annots() {
     fi
 }
 
+# ==========================================
+# ====== Git facilities for lazy devs ======
+# ==========================================
+
+function gitLastCommitHash() {
+    BRANCH=$1
+    git log -n 1 $BRANCH --pretty=format:"%H"
+}
+
+function gitCherryPickLastCommit() {
+    BRANCH=$1
+    HASH=$(gitLastCommitHash($BRANCH))
+    git cherry-pick $HASH
+}
+
 # ==================================================
 # ====== Frequent file conversions (shorties) ======
 # ==================================================
@@ -459,6 +474,8 @@ alias x="exit"
 alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
 alias gcmt="git commit"
 alias gckt="git checkout"
+alias gcp="git cherry-pick"
+alias gftch="git fetch
 alias gpl="git pull"
 alias gpsh="git push"
 alias gst="git status"
