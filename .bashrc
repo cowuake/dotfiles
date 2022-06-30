@@ -475,7 +475,7 @@ alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
 alias gcmt="git commit"
 alias gckt="git checkout"
 alias gcp="git cherry-pick"
-alias gftch="git fetch
+alias gftch="git fetch"
 alias gpl="git pull"
 alias gpsh="git push"
 alias gst="git status"
