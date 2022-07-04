@@ -472,6 +472,7 @@ alias x="exit"
 # ====== Git ======
 # =================
 alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
+alias gcl="git clean -d -f"
 alias gcmt="git commit"
 alias gckt="git checkout"
 alias gcp="git cherry-pick"
