@@ -372,10 +372,6 @@ or switch to the buffer if it already exists"
 
 (set-font)
 
-;; SET DEFAULT THEME (LIGHT OR DARK)
-(load-dark-theme)
-;(load-light-theme)
-
 ;;;; Suppress unused interface components
 ;(toggle-scroll-bar -1); Disable the scrollbar
 (menu-bar-mode -1); Disable the menu bar
@@ -1019,6 +1015,7 @@ There are two things you can do about this warning:
 ;; ====== TERM, ANSI-TERM, VTERM, MULTI-TERM, MULTI-VTERM ======
 ;; =============================================================
 
+;; Need to install libtool-bin on a fresh Debian installation
 (use-package multi-term
   :ensure t
   :config (defadvice term-handle-exit
@@ -1392,3 +1389,14 @@ There are two things you can do about this warning:
 ;; NOTE:: This overrides the values used while reading the config
 (setq gc-cons-threshold (* 4 1024 1024))
 (setq gc-cons-percentage 0.1)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ==============================
+;; ====== POST-CONFIG EXEC ======
+;; ==============================
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; SET DEFAULT THEME (LIGHT OR DARK)
+(load-dark-theme)
+;(load-light-theme)
