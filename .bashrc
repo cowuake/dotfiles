@@ -291,32 +291,33 @@ function update-distro() {
     fi
 }
 
-function fedora-dotnet-trust-dev-certs() {
-    CERTS_DIR=~/.certs
+if on-classic-linux "Fedora Linux" ; then
+    function fedora-dotnet-trust-dev-certs() {
+	CERTS_DIR=~/.certs
 
-    dotnet dev-certs https -ep $CERTS_DIR/by_dotnet.crt --format PEM
-    certutil -d sql:$HOME/.pki/nssdb -A -t "P,," -n localhost -i $CERTS_DIR/by_dotnet.crt
-    certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localhost -i $CERTS_DIR/by_dotnet.crt
-    sudo cp $CERTS_DIR/by_dotnet.crt /etc/pki/tls/certs/localhost.pem
-    sudo update-ca-trust
+	dotnet dev-certs https -ep $CERTS_DIR/by_dotnet.crt --format PEM
+	certutil -d sql:$HOME/.pki/nssdb -A -t "P,," -n localhost -i $CERTS_DIR/by_dotnet.crt
+	certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localhost -i $CERTS_DIR/by_dotnet.crt
+	sudo cp $CERTS_DIR/by_dotnet.crt /etc/pki/tls/certs/localhost.pem
+	sudo update-ca-trust
 
-    EASYRSA_DIR=~/.easyrsa
+	EASYRSA_DIR=~/.easyrsa
 
-    # Install easy-rsa if not already installed
-    if rpm -q easy-rsa | grep -q 'not installed'; then
-	sudo dnf in easy-rsa
-    fi
+	# Install easy-rsa if not already installed
+	if rpm -q easy-rsa | grep -q 'not installed'; then
+	    sudo dnf in easy-rsa
+	fi
 
-    if ! [ -d $EASYRSA_DIR ]; then
-	mkdir $EASYRSA_DIR
-	chmod 700 $EASYRSA_DIR
-    fi
+	if ! [ -d $EASYRSA_DIR ]; then
+	    mkdir $EASYRSA_DIR
+	    chmod 700 $EASYRSA_DIR
+	fi
 
-    cd $EASYRSA_DIR
-    cp -r /usr/share/easy-rsa/3/* .
-    ./easyrsa init-pki
+	cd $EASYRSA_DIR
+	cp -r /usr/share/easy-rsa/3/* .
+	./easyrsa init-pki
 
-    cat << EOF > vars
+	cat << EOF > vars
 set_var EASYRSA_REQ_COUNTRY    "US"
 set_var EASYRSA_REQ_PROVINCE   "Texas"
 set_var EASYRSA_REQ_CITY       "Houston"
@@ -327,35 +328,36 @@ set_var EASYRSA_ALGO           "ec"
 set_var EASYRSA_DIGEST         "sha512"
 EOF
 
-    ./easyrsa build-ca nopass
-    sudo cp ./pki/ca.crt /etc/pki/ca-trust/source/anchors/easyrsaca.crt
-    sudo update-ca-trust
+	./easyrsa build-ca nopass
+	sudo cp ./pki/ca.crt /etc/pki/ca-trust/source/anchors/easyrsaca.crt
+	sudo update-ca-trust
 
-    if ! [ -d ./req ]; then
-	mkdir req
-    fi
-    cd req
-    openssl genrsa -out localhost.key
-    openssl req -new -key localhost.key -out localhost.req \
-	    -subj /C=US/ST=Texas/L=Houston/O=Development/OU=LocalDevelopment/CN=localhost
-    cd ../
+	if ! [ -d ./req ]; then
+	    mkdir req
+	fi
+	cd req
+	openssl genrsa -out localhost.key
+	openssl req -new -key localhost.key -out localhost.req \
+		-subj /C=US/ST=Texas/L=Houston/O=Development/OU=LocalDevelopment/CN=localhost
+	cd ../
 
-    ./easyrsa import-req ./req/localhost.req localhost
-    ./easyrsa sign-req server localhost
+	./easyrsa import-req ./req/localhost.req localhost
+	./easyrsa sign-req server localhost
 
-    cd
+	cd
 
-    mkdir $CERTS_DIR
-    cp $EASYRSA_DIR/pki/issued/localhost.crt $CERTS_DIR/localhost.crt
-    cp $EASYRSA_DIR/req/localhost.key $CERTS_DIR/localhost.key
-    cd $CERTS_DIR
-    openssl pkcs12 -export -out localhost.pfx -inkey localhost.key -in localhost.crt
+	mkdir $CERTS_DIR
+	cp $EASYRSA_DIR/pki/issued/localhost.crt $CERTS_DIR/localhost.crt
+	cp $EASYRSA_DIR/req/localhost.key $CERTS_DIR/localhost.key
+	cd $CERTS_DIR
+	openssl pkcs12 -export -out localhost.pfx -inkey localhost.key -in localhost.crt
 
-    echo
-    echo "The following environmental variables should be exported:"
-    echo "ASPNETCORE_Kestrel__Certificates__Default__Password"
-    echo "ASPNETCORE_Kestrel__Certificates__Default__Path (ponting to $CERTS_DIR/localhost.pfx"
-}
+	echo
+	echo "The following environmental variables should be exported:"
+	echo "ASPNETCORE_Kestrel__Certificates__Default__Password"
+	echo "ASPNETCORE_Kestrel__Certificates__Default__Path (ponting to $CERTS_DIR/localhost.pfx"
+    }
+fi
 
 # ============================
 # ====== PDF Facilities ======
@@ -558,10 +560,18 @@ alias mesh="~/$GIT_REPOS_DIR/SU2_functionalUtilities/mesh.jl"
 alias adjust_filenames="perl -e 'rename\$_,y/ /_/drfor<\"* *\">'"
 
 # ============================================================
+# ====== DEBIAN ADDITIONS (I.E., ADDITIONAL ALIASES...) ======
+# ============================================================
+
+if on-classic-linux "Debian GNU/Linux" ; then
+    alias debian_upgrade_release="sudo apt update && sudo apt upgrade && sudo apt full-upgrade"
+fi
+
+# ============================================================
 # ====== FEDORA ADDITIONS (I.E., ADDITIONAL ALIASES...) ======
 # ============================================================
 
-if [[ -f "/etc/os-release" && on-fedora ]] ; then
+if on-classic-linux "Fedora Linux" ; then
     alias fedora_dnf_reset="sudo dnf clean all && sudo dnf makecache --refresh -v"
     alias fedora_enable_chez_scheme="sudo dnf copr enable superboum/chez-scheme"
     alias fedora_enable_tdlib_fresh="sudo dnf copr enable carlis/tdlib-fresh"
