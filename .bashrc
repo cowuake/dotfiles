@@ -230,7 +230,9 @@ function on-classic-linux() {
 	    return 1
 	fi
     else
-	echo "/etc/os-release not found. This is not classic GNU/Linux."
+	if [[ $1 == "" ]] ; then
+	    echo "/etc/os-release not found. This is not classic GNU/Linux."
+	fi
 	return 1
     fi
 }
