@@ -204,7 +204,7 @@ export JULIA_NUM_THREADS=$CPU_CORES
 # ================================
 function random-files() {
     # Set number of files to be created
-    if [ $# -eq 0 ]; then N=1; else N=$1; fi
+    if [ $# -eq 0 ] ; then N=1; else N=$1; fi
     # Confirm the operation to be performed
     echo "Going to create $N files with random names."
     # LOOP
@@ -236,7 +236,7 @@ function on-classic-linux() {
 }
 
 function on-guix() {
-    if [[ -n "$GUIX_LOCPATH" ]]; then
+    if [[ -n "$GUIX_LOCPATH" ]] ; then
 	return 0
     else
 	return 1
@@ -304,11 +304,11 @@ if on-classic-linux "Fedora Linux" ; then
 	EASYRSA_DIR=~/.easyrsa
 
 	# Install easy-rsa if not already installed
-	if rpm -q easy-rsa | grep -q 'not installed'; then
+	if rpm -q easy-rsa | grep -q 'not installed' ; then
 	    sudo dnf in easy-rsa
 	fi
 
-	if ! [ -d $EASYRSA_DIR ]; then
+	if ! [ -d $EASYRSA_DIR ] ; then
 	    mkdir $EASYRSA_DIR
 	    chmod 700 $EASYRSA_DIR
 	fi
@@ -332,7 +332,7 @@ EOF
 	sudo cp ./pki/ca.crt /etc/pki/ca-trust/source/anchors/easyrsaca.crt
 	sudo update-ca-trust
 
-	if ! [ -d ./req ]; then
+	if ! [ -d ./req ] ; then
 	    mkdir req
 	fi
 	cd req
@@ -364,7 +364,7 @@ fi
 # ============================
 function pdf-rm-annots() {
     OLD_FNAME=$1
-    if [[ $OLD_FNAME != "" && $OLD_FNAME != " " ]]; then
+    if [[ $OLD_FNAME != "" && $OLD_FNAME != " " ]] ; then
 	NEW_FNAME=$(echo $OLD_FNAME | sed -e 's/\.[^.]*$/_no-annots&/')
 	pdftk $OLD_FNAME output - uncompress \
 	    | sed '/^\/Annots/d' \
@@ -392,7 +392,7 @@ function gitCherryPickLastCommit() {
 # ====== Frequent file conversions (shorties) ======
 # ==================================================
 function convert-webm-to-mp4() {
-    if [[ "${1: -5}" == ".webm" ]]; then
+    if [[ "${1: -5}" == ".webm" ]] ; then
 	OLD_NAME=$1
 	NEW_NAME="${OLD_NAME%.*}.mp4"
 	ffmpeg -fflags +genpts -i $OLD_NAME -r 24 $NEW_NAME
