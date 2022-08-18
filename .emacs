@@ -987,28 +987,28 @@ There are two things you can do about this warning:
 ;;;;; If on Fedora, in order for telegram-server to compile, install tdlib from
 ;;;;;;;  https://copr.fedorainfracloud.org/coprs/carlis/tdlib-fresh/
 
-(use-package telega
-  :ensure t
-  :config (progn
-	    (telega-notifications-mode 1)
-	    (add-hook 'telega-chat-mode-hook
-		      (lambda ()
-			(set (make-local-variable 'company-backends)
-			     (append '(telega-company-emoji
-				       telega-company-username
-				       telega-company-hashtag)
-				     (when (telega-chat-bot-p telega-chatbuf--chat)
-				       '(telega-company-botcmd))))
-			(company-mode 1))))
-  :custom (
-	   (telega-use-images t)
-	   (telega-chat-show-avatars t)
-	   (telega-root-show-avatars t)
-	   (telega-user-show-avatars t)
-	   (telega-emoji-font-family "Noto Color Emoji")
-	   (telega-emoji-use-images t)
-	   )
-  )
+;(use-package telega
+;  :ensure t
+;  :config (progn
+;	    (telega-notifications-mode 1)
+;	    (add-hook 'telega-chat-mode-hook
+;		      (lambda ()
+;			(set (make-local-variable 'company-backends)
+;			     (append '(telega-company-emoji
+;				       telega-company-username
+;				       telega-company-hashtag)
+;				     (when (telega-chat-bot-p telega-chatbuf--chat)
+;				       '(telega-company-botcmd))))
+;			(company-mode 1))))
+;  :custom (
+;	   (telega-use-images t)
+;	   (telega-chat-show-avatars t)
+;	   (telega-root-show-avatars t)
+;	   (telega-user-show-avatars t)
+;	   (telega-emoji-font-family "Noto Color Emoji")
+;	   (telega-emoji-use-images t)
+;	   )
+;  )
 
 
 ;; =============================================================
