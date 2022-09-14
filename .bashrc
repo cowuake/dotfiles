@@ -386,7 +386,7 @@ function gitLastCommitHash() {
 
 function gitCherryPickLastCommit() {
     BRANCH=$1
-    HASH=$(gitLastCommitHash($BRANCH))
+    HASH=$(gitLastCommitHash $BRANCH)
     git cherry-pick $HASH
 }
 
@@ -766,3 +766,7 @@ export NVM_DIR="$HOME/.nvm"
 
 # Load Angular CLI autocompletion.
 source <(ng completion script)
+
+# fnm
+export PATH=~/.fnm:$PATH
+eval "`fnm env`"
