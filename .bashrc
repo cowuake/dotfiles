@@ -764,9 +764,13 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
-# Load Angular CLI autocompletion.
-source <(ng completion script)
+if [ -x "$(command -v ng)" ] ; then
+    # Load Angular CLI autocompletion.
+    source <(ng completion script)
+fi
 
-# fnm
-export PATH=~/.fnm:$PATH
-eval "`fnm env`"
+if [ -x "$(command -v fnm)" ] ; then
+    # fnm
+    export PATH=~/.fnm:$PATH
+    eval "`fnm env`"
+fi
