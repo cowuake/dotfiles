@@ -3,6 +3,7 @@
         "bass_enhancer": {
             "amount": 5.0,
             "blend": 0.0,
+            "bypass": false,
             "floor": 20.0,
             "floor-active": true,
             "harmonics": 8.5,
@@ -12,6 +13,8 @@
         },
         "blocklist": [],
         "equalizer": {
+            "balance": 0.0,
+            "bypass": false,
             "input-gain": 0.0,
             "left": {
                 "band0": {
@@ -318,6 +321,8 @@
             "mode": "IIR",
             "num-bands": 30,
             "output-gain": 0.0,
+            "pitch-left": 0.0,
+            "pitch-right": 0.0,
             "right": {
                 "band0": {
                     "frequency": 22.59,
@@ -622,13 +627,6 @@
             },
             "split-channels": false
         },
-        "maximizer": {
-            "ceiling": 0.0,
-            "input-gain": 0.0,
-            "output-gain": 0.0,
-            "release": 3.149999999999997,
-            "threshold": -3.0000000000000013
-        },
         "multiband_compressor": {
             "band0": {
                 "attack-threshold": -12.0,
@@ -642,7 +640,7 @@
                 "makeup": 0.0,
                 "mute": false,
                 "ratio": 1.0,
-                "release-threshold": -120.0,
+                "release-threshold": -100.0,
                 "release-time": 100.0,
                 "sidechain-custom-highcut-filter": false,
                 "sidechain-custom-lowcut-filter": false,
@@ -668,7 +666,7 @@
                 "makeup": 0.0,
                 "mute": false,
                 "ratio": 1.0,
-                "release-threshold": -120.0,
+                "release-threshold": -100.0,
                 "release-time": 100.0,
                 "sidechain-custom-highcut-filter": false,
                 "sidechain-custom-lowcut-filter": false,
@@ -695,7 +693,7 @@
                 "makeup": 0.0,
                 "mute": false,
                 "ratio": 1.0,
-                "release-threshold": -120.0,
+                "release-threshold": -100.0,
                 "release-time": 100.0,
                 "sidechain-custom-highcut-filter": false,
                 "sidechain-custom-lowcut-filter": false,
@@ -722,7 +720,7 @@
                 "makeup": 0.0,
                 "mute": false,
                 "ratio": 1.0,
-                "release-threshold": -120.0,
+                "release-threshold": -100.0,
                 "release-time": 100.0,
                 "sidechain-custom-highcut-filter": false,
                 "sidechain-custom-lowcut-filter": false,
@@ -749,7 +747,7 @@
                 "makeup": 0.0,
                 "mute": false,
                 "ratio": 1.0,
-                "release-threshold": -120.0,
+                "release-threshold": -100.0,
                 "release-time": 100.0,
                 "sidechain-custom-highcut-filter": false,
                 "sidechain-custom-lowcut-filter": false,
@@ -776,7 +774,7 @@
                 "makeup": 0.0,
                 "mute": false,
                 "ratio": 1.0,
-                "release-threshold": -120.0,
+                "release-threshold": -100.0,
                 "release-time": 100.0,
                 "sidechain-custom-highcut-filter": false,
                 "sidechain-custom-lowcut-filter": false,
@@ -803,7 +801,7 @@
                 "makeup": 0.0,
                 "mute": false,
                 "ratio": 1.0,
-                "release-threshold": -120.0,
+                "release-threshold": -100.0,
                 "release-time": 100.0,
                 "sidechain-custom-highcut-filter": false,
                 "sidechain-custom-lowcut-filter": false,
@@ -830,7 +828,7 @@
                 "makeup": 0.0,
                 "mute": false,
                 "ratio": 1.0,
-                "release-threshold": -120.0,
+                "release-threshold": -100.0,
                 "release-time": 100.0,
                 "sidechain-custom-highcut-filter": false,
                 "sidechain-custom-lowcut-filter": false,
@@ -844,16 +842,18 @@
                 "solo": false,
                 "split-frequency": 16000.0
             },
+            "bypass": false,
             "compressor-mode": "Modern",
+            "dry": -100.0,
             "envelope-boost": "None",
             "input-gain": 0.0,
-            "output-gain": 0.0
+            "output-gain": 0.0,
+            "wet": 0.0
         },
         "plugins_order": [
             "equalizer",
             "bass_enhancer",
-            "multiband_compressor",
-            "maximizer"
+            "multiband_compressor"
         ]
     }
 }
