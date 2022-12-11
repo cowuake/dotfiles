@@ -78,7 +78,8 @@
 ;(setq theme-light 'sanityinc-tomorrow-day)
 ;(setvar theme-dark 'nord)
 ;(setvar theme-light 'gruvbox-light-medium)
-(setvar theme-light 'solarized-light)
+;(setvar theme-light 'solarized-light)
+(setvar theme-light 'sanityinc-solarized-light)
 ;(setvar theme-light 'one-light)
 ;(setvar theme-dark 'sanityinc-tomorrow-eighties)
 ;(setvar theme-dark 'monokai-pro-machine)
@@ -1153,6 +1154,9 @@ There are two things you can do about this warning:
 ;; ====== SOLARIZED (COLOR SCHEME) ======
 ;; ======================================
 (use-package solarized-theme
+  :ensure t
+  )
+(use-package color-theme-sanityinc-solarized
   :ensure t
   )
 
