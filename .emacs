@@ -1398,5 +1398,5 @@ There are two things you can do about this warning:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; SET DEFAULT THEME (LIGHT OR DARK)
-(load-dark-theme)
-;(load-light-theme)
+;(load-dark-theme)
+(load-light-theme)
