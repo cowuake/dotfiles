@@ -585,6 +585,7 @@ if on-classic-linux "Fedora Linux" ; then
       | grep -v -- '-debuginfo$' \
       | grep -v '^\(kernel-modules\|kernel\|kernel-core\|kernel-devel\)$'"
     alias fedora_my_repositories="dnf repolist enabled"
+    alias kk="rpm -qa kernel"
 fi
 
 # ==========================================================
