@@ -577,6 +577,7 @@ alias anaconda3_update_newest="conda3 update conda && conda3 update --all"
 # =====================================================
 alias matlab="matlab & disown matlab"
 alias matlabcli="matlab -nodesktop -nosplash"
+alias rtcw="$GIT_CLONES_DIR/iortcw/SP/build/release-linux-x86-64/iowolfsp.x86_64"
 alias quake2="$GIT_CLONES_DIR/yquake2/release/quake2"
 alias quake3="$GIT_CLONES_DIR/ioq3/build/release-linux-x86_64/ioquake3.x86_64"
 
