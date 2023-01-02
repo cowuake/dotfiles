@@ -44,6 +44,8 @@ fi
 # ============================
 ###############################
 
+shopt -s globstar
+
 # =====================
 # ====== INPUTRC ======
 # =====================
@@ -442,6 +444,7 @@ alias ll="ls -ahlrt"
 alias lld="lsd -ahlrt"
 alias lll="ls -ahlrS"
 alias llld="lsd -ahlrS"
+alias lower="find . -depth -exec prename 'y/A-Z/a-z/' {} \;"
 alias mem="echo Available memory: $(free -h | grep Mem | awk '{print $7}')"
 alias mnt="findmnt"
 alias myhtop="htop -u $USER"
@@ -467,6 +470,7 @@ alias update_distro="update-distro"
 alias ud="update_distro"
 alias update_firmwares="fwupdmgr get-devices && fwupdmgr refresh --force && fwupdmgr update"
 alias uf="update_firmwares"
+alias upper="find . -depth -exec prename 'y/a-z/A-Z/' {} \;"
 alias vc="sudo vpnc"
 alias vd="sudo vpnc-disconnect"
 alias vi="vim"
