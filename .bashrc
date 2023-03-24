@@ -633,6 +633,16 @@ alias rhel_awake_subscription="sudo subscription-manager remove --all; \
 			       sudo subscription-manager register; \
 			       sudo subscription-manager attach --auto"
 
+##################################################
+# ===============================================
+# ====== WSL (Windows Subsystem for Linux) ======
+# ===============================================
+##################################################
+
+if [[ $(uname -r) == *"WSL"* ]]; then
+    eval `ssh-agent -s`;
+    ssh-add ~/.ssh/id_ed25519;
+fi;
 
 #######################################
 # ====================================
