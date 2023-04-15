@@ -622,6 +622,9 @@ if on-classic-linux "Fedora Linux" ; then
       | grep -v '^\(kernel-modules\|kernel\|kernel-core\|kernel-devel\)$'"
     alias fedora_my_repositories="dnf repolist enabled"
     alias kk="rpm -qa kernel"
+    FEDORA_VERSION_ID=$(cat /etc/os-release | grep VERSION_ID | cut -d '=' -f2)
+    FEDORA_VERSION_ID_NEXT=$((FEDORA_VERSION_ID + 1))
+    alias fedora_next_download="sudo dnf system-upgrade download --releasever=$FEDORA_VERSION_ID_NEXT"
 fi
 
 # ==========================================================
