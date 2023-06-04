@@ -1,6 +1,6 @@
 {
     "output": {
-        "bass_enhancer": {
+        "bass_enhancer#0": {
             "amount": 5.0,
             "blend": 0.0,
             "bypass": false,
@@ -12,7 +12,7 @@
             "scope": 80.0
         },
         "blocklist": [],
-        "equalizer": {
+        "equalizer#0": {
             "balance": 0.0,
             "bypass": false,
             "input-gain": 0.0,
@@ -627,7 +627,27 @@
             },
             "split-channels": false
         },
-        "multiband_compressor": {
+        "limiter#0": {
+            "alr": false,
+            "alr-attack": 5.0,
+            "alr-knee": 0.0,
+            "alr-release": 50.0,
+            "attack": 5.0,
+            "bypass": false,
+            "dithering": "None",
+            "external-sidechain": false,
+            "gain-boost": true,
+            "input-gain": 0.0,
+            "lookahead": 10.0,
+            "mode": "Herm Thin",
+            "output-gain": 0.0,
+            "oversampling": "Half x4(3L)",
+            "release": 5.0,
+            "sidechain-preamp": 0.0,
+            "stereo-link": 100.0,
+            "threshold": 0.0
+        },
+        "multiband_compressor#0": {
             "band0": {
                 "attack-threshold": -12.0,
                 "attack-time": 20.0,
@@ -851,9 +871,10 @@
             "wet": 0.0
         },
         "plugins_order": [
-            "equalizer",
-            "bass_enhancer",
-            "multiband_compressor"
+            "equalizer#0",
+            "bass_enhancer#0",
+            "multiband_compressor#0",
+            "limiter#0"
         ]
     }
 }
