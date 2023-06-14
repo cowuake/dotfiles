@@ -642,7 +642,7 @@ alias rhel_awake_subscription="sudo subscription-manager remove --all; \
 # ===============================================
 ##################################################
 
-if [[ $(uname -r) == *"WSL"* ]]; then
+if [[ $(uname -r) == *"WSL"* && $SSH_AGENT_PID = "" ]]; then
     eval `ssh-agent -s`;
     ssh-add ~/.ssh/id_ed25519;
 fi;
