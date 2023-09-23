@@ -462,7 +462,7 @@
                 "solo": false,
                 "split-frequency": 16000.0
             },
-            "bypass": false,
+            "bypass": true,
             "compressor-mode": "Modern",
             "dry": -100.0,
             "envelope-boost": "None",
