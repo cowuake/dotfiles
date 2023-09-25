@@ -434,6 +434,7 @@ alias h="htop"
 alias hosts_up="nmap -sP 192.168.1.*"
 alias kernel="echo '$KERNEL'"
 alias k="echo '$KERNEL'"
+alias install_julia='sudo bash -ci "$(curl -fsSL https://raw.githubusercontent.com/abelsiqueira/jill/main/jill.sh)"'
 alias install_rustup="curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
 alias is_login_shell="shopt login_shell | cut -f 2"
 alias ls="\ls --color"
