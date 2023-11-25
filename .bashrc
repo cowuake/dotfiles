@@ -563,7 +563,7 @@ alias v="cd ~/Videos"
 alias gnome_hhkb_mode="gsettings set org.gnome.desktop.input-sources \
       xkb-options \"['compose:rsuper', 'compose:rwin']\""
 alias gnome_thinkpad_mode="gsettings set org.gnome.desktop.input-sources \
-      xkb-options \"['lv3:ralt_switch', 'altwin:swap_alt_win', 'compose:ralt', 'ctrl:swapcaps_hyper']\""
+      xkb-options \"['altwin:swap_alt_win', 'compose:ralt', 'ctrl:swapcaps_hyper']\""
 
 # ====================
 # ====== Python ======
