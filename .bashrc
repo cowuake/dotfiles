@@ -14,6 +14,15 @@
 # Riccardo Mura created and uses this configuration file
 
 
+# ========================
+# ====== DEBUGGING =======
+# ========================
+
+set +x
+
+# Uncomment this line in order to debug this file
+#set -x
+
 # ======================
 # ====== SOURCING ======
 # ======================
