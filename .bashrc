@@ -696,6 +696,7 @@ function on-wsl() {
     fi
 }
 
+
 if [[ $(on-wsl) && $SSH_AGENT_PID = "" ]]; then
     eval `ssh-agent -s` > /dev/null 2>&1;
     ssh-add ~/.ssh/id_ed25519 > /dev/null 2>&1;
@@ -874,7 +875,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
-if [ -x "$(command -v ng)" ] ; then
+# See https://stackoverflow.com/questions/67938486/after-installing-npm-on-wsl-ubuntu-20-04-i-get-the-message-usr-bin-env-bash
+if [ -x "$(command -v ng | grep -v /mnt/c/)" ] ; then
     # Load Angular CLI autocompletion.
     source <(ng completion script)
 fi
@@ -884,3 +886,4 @@ if [ -x "$(command -v fnm)" ] ; then
     export PATH=~/.fnm:$PATH
     eval "`fnm env`"
 fi
+
