@@ -7,5 +7,6 @@
 !.emacs
 !.screenrc
 !.tmux.conf
+!.vimrc
 !LICENSE
 !README.md
