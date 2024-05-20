@@ -688,7 +688,15 @@ alias rhel_awake_subscription="\
 # ===============================================
 ##################################################
 
-if [[ $(uname -r) == *"WSL"* && $SSH_AGENT_PID = "" ]]; then
+function on-wsl() {
+    if [[ $(uname -r) == *"WSL"* ]] ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+if [[ $(on-wsl) && $SSH_AGENT_PID = "" ]]; then
     eval `ssh-agent -s` > /dev/null 2>&1;
     ssh-add ~/.ssh/id_ed25519 > /dev/null 2>&1;
 fi;
