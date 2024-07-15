@@ -181,7 +181,8 @@ fi
 ### ADDITIONS TO $PATH
 source_dirs=(
     $HOME/bin                # personal executable files
-    $HOME/.julia/bin/        # Julia binaries
+    $HOME/.julia/bin         # Julia binaries
+    $HOME/.jenv/bin          # jenv
     /usr/lib64/openmpi/bin   # OPENMPI binaries, e.g., mpicc, mpicxx
     /usr/lib64/mpich/bin     # MPICH binaries, e.g., mpicc, mpicxx
     /opt/mssql-tools/bin     # Microsoft SQL Server CLI utilities
@@ -191,9 +192,14 @@ source_dirs=(
 for source in "${source_dirs[@]}"
 do
     if [ -d "$source" ] ; then
-        PATH="$source":$PATH
+        export PATH="$source":$PATH
     fi
 done
+
+if [ -f ~/.jenv/bin/jenv ] ; then
+    eval "$(jenv init -)" > /dev/null 2>&1
+    jenv enable-plugin export > /dev/null 2>&1
+fi
 
 OPENMPI_INSTALL_DIR=/usr/lib64/openmpi
 MPICH_INSTALL_DIR=/usr/lib64/mpich
@@ -448,6 +454,7 @@ alias hosts_up="nmap -sP 192.168.1.*"
 alias kernel="echo '$KERNEL'"
 alias k="echo '$KERNEL'"
 alias install_fnm='curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "$HOME/bin" --skip-shell'
+alias install_jenv='git clone https://github.com/jenv/jenv.git ~/.jenv'
 alias install_julia='sudo bash -ci "$(curl -fsSL https://raw.githubusercontent.com/abelsiqueira/jill/main/jill.sh)"'
 alias install_rustup="curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
 alias is_login_shell="shopt login_shell | cut -f 2"
