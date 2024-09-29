@@ -283,6 +283,9 @@ function update-distro() {
         elif on-classic-linux "Debian GNU/Linux" ; then
             UPDATE_CMD="sudo apt update && sudo apt upgrade"
             FOUND_DISTRO=1
+        elif on-classic-linux "Pop!" ; then
+            UPDATE_CMD="sudo apt update && sudo apt upgrade"
+            FOUND_DISTRO=1
         elif on-classic-linux "openSUSE Tumbleweed" ; then
             if [[ $OPTION == "fast" ]] ; then
                 UPDATE_CMD="sudo zypper dup --allow-vendor-change"
