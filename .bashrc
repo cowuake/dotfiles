@@ -560,6 +560,14 @@ alias update_clones='\
     do (cd $d; echo "### Entered $d"; git pull; echo ""); done'
 alias uc="update_clones"
 
+
+# ====================
+# ====== Docker ======
+# ====================
+alias dlc="docker container list"
+alias dli="docker image list"
+alias dlv="docker volume list"
+
 # =======================
 # ====== Hardware  ======
 # =======================
