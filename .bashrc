@@ -568,6 +568,7 @@ alias dlc="docker container list"
 alias dli="docker image list"
 alias dlv="docker volume list"
 alias dcd="docker compose down --remove-orphans --volumes"
+alias dp="docker system prune --volumes --force"
 
 # =======================
 # ====== Hardware  ======
