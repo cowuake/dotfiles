@@ -46,6 +46,12 @@ if [ -f ~/.Xresources ] ; then
     xrdb ~/.Xresources
 fi
 
+# ==================
+# ====== PATH ======
+# ==================
+
+export PATH=$PATH:/usr/local/go/bin
+
 
 ###############################
 # ============================
@@ -183,6 +189,7 @@ source_dirs=(
     $HOME/bin                # personal executable files
     $HOME/.julia/bin         # Julia binaries
     $HOME/.jenv/bin          # jenv
+    $HOME/go/bin
     /usr/lib64/openmpi/bin   # OPENMPI binaries, e.g., mpicc, mpicxx
     /usr/lib64/mpich/bin     # MPICH binaries, e.g., mpicc, mpicxx
     /opt/mssql-tools/bin     # Microsoft SQL Server CLI utilities
@@ -212,6 +219,9 @@ PATH=$GIT_CLONES_DIR/refine/build/bin:$PATH
 
 ### JULIA
 export JULIA_NUM_THREADS=$CPU_CORES
+
+### GO
+export GOPATH=$HOME/go
 
 
 #################################
