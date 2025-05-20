@@ -1,12 +1,16 @@
 *
 !.gitignore
+!.shell/
+!.shell/**
 !.config_bootstrap.sh
 !.config/mpv/mpv.conf
 !.config/pipewire/client.conf
 !.bashrc
+!.zshrc
 !.emacs
 !.screenrc
 !.tmux.conf
 !.vimrc
 !LICENSE
 !README.md
+
