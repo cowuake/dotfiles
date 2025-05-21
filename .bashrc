@@ -49,10 +49,10 @@ fi
 SHELL_DIR=~/.shell
 . $SHELL_DIR/{common,bash}/aliases/*.sh
 . $SHELL_DIR/{common,bash}/auto/*.sh
-. $SHELL_DIR/{common,bash}/environment/*.sh
 . $SHELL_DIR/{common,bash}/functions/*.sh
 . $SHELL_DIR/{common,bash}/os/*.sh
 . $SHELL_DIR/{common,bash}/session/*.sh
+. $SHELL_DIR/{common,bash}/environment/*.sh
 
 
 ###############################

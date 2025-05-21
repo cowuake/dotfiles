@@ -1,12 +1,37 @@
+########################################
+# =====================================
+# ====== Common Environment vars ======
+# =====================================
+########################################
+
+KERNEL=$(uname -srv)
+
+
 ##############################################
 # ===========================================
 # ====== Distro Facilities (GNU/Linux) ======
 # ===========================================
 ##############################################
 
+function on-linux() {
+    if [[ $(uname -s) == "Linux" ]] ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 function on-classic-linux() {
+    if ! on-linux ; then
+        return 1
+    fi
+
     if [[ -f "/etc/os-release" ]] ; then
-        if [[ `cat /etc/os-release | grep \^NAME` == *"$1"* ]] ; then
+        DISTRO=$(cat /etc/os-release | grep ^NAME= | cut -d '=' -f2 | tr -d '"')
+        DISTRO_ID=$(cat /etc/os-release | grep ^ID= | cut -d '=' -f2 | tr -d '"')
+        DISTRO_VERSION=$(cat /etc/os-release | grep ^VERSION_ID= | cut -d '=' -f2 | tr -d '"')
+
+        if [[ "$DISTRO" == *"$1"* ]] || [[ "$DISTRO_ID" == *$1* ]] ; then
             return 0
         else
             return 1
@@ -232,3 +257,18 @@ if [[ on-wsl && $SSH_AGENT_PID = "" ]]; then
     eval `ssh-agent -s` > /dev/null 2>&1;
     ssh-add ~/.ssh/id_ed25519 > /dev/null 2>&1;
 fi;
+
+
+#################################
+# ==============================
+# ====== macOS Facilities ======
+# ==============================
+#################################
+
+function on-macos() {
+    if [[ $(uname -s) == "Darwin" ]] ; then
+        return 0
+    else
+        return 1
+    fi
+}
