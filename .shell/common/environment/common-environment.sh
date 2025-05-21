@@ -9,24 +9,14 @@ GIT_REPOS_DIR=$HOME/gitRepos
 GIT_CLONES_DIR=$HOME/gitClones
 
 ### MACHINE RESOURCES
-CPU_CORES=$(cat /proc/cpuinfo | grep -m 1 "cpu cores" | awk '{print $4}')
-CPU_THREADS=$(nproc --all)
-CPU_THREADS_PER_CORE=$(echo "$CPU_THREADS / $CPU_CORES" | bc)
-
-### OPERATING SYSTEM
-KERNEL=$(uname -srv)
-
-### TEXT EDITOR
-if [ -f "/usr/bin/emacs" ] ; then
-    if ps -aux | grep "emacs  --daemon" > /dev/null 2>&1 ; then
-        EDITOR=emacsclient
-    else
-        EDITOR=EMACS
-    fi
-else
-    if [ -f "/usr/bin/vim" ] ; then
-       EDITO=vim
-    fi
+if on-linux ; then
+    CPU_CORES=$(cat /proc/cpuinfo | grep -m 1 "cpu cores" | awk '{print $4}')
+    CPU_THREADS=$(nproc --all)
+    CPU_THREADS_PER_CORE=$(echo "$CPU_THREADS / $CPU_CORES" | bc)
+elif on-macos ; then
+    CPU_CORES=$(sysctl -n hw.physicalcpu)
+    CPU_THREADS=$(sysctl -n hw.logicalcpu)
+    CPU_THREADS_PER_CORE=$(echo "$CPU_THREADS / $CPU_CORES" | bc)
 fi
 
 ### ADDITIONS TO $PATH
@@ -69,14 +59,14 @@ export JULIA_NUM_THREADS=$CPU_CORES
 export GOPATH=$HOME/go
 
 ### TEXT EDITOR
-# if [ -f "/usr/bin/emacs" ] ; then
-#     if ps -aux | grep "emacs  --daemon" > /dev/null 2>&1 ; then
-# 	EDITOR=emacsclient
-#     else
-# 	EDITOR=EMACS
-#     fi
-# else
-#     if [ -f "/usr/bin/vim" ] ; then
-#        EDITOR=vim
-#     fi
-# fi
+if [ -f "/usr/bin/emacs" ] ; then
+    if ps -aux | grep "emacs  --daemon" > /dev/null 2>&1 ; then
+	EDITOR=emacsclient
+    else
+	EDITOR=EMACS
+    fi
+else
+    if [ -f "/usr/bin/vim" ] ; then
+       EDITOR=vim
+    fi
+fi
