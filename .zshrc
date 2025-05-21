@@ -122,6 +122,5 @@ PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; h
 # ====================
 # ====== PROMPT ======
 # ====================
-
-PROMPT="%B%~%b
+PROMPT="%B%F{cyan}%~%f%b
 %B[%F{blue}%n%f@%F{red}%m%f]%b%% "
