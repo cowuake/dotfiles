@@ -35,12 +35,12 @@ fi
 SHELL_DIR=~/.shell
 for dir in $SHELL_DIR/{common,zsh}; do
     if [ -d "$dir" ] ; then
+        . "$dir"/session/*.sh
+        . "$dir"/os/*.sh
+        . "$dir"/environment/*.sh
+        . "$dir"/functions/*.sh
         . "$dir"/aliases/*.sh
         . "$dir"/auto/*.sh
-        . "$dir"/functions/*.sh
-        . "$dir"/os/*.sh
-        . "$dir"/session/*.sh
-        . "$dir"/environment/*.sh
     fi
 done
 

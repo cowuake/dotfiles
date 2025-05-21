@@ -40,7 +40,6 @@ alias lld="lsd -ahlrt"
 alias lll="ls -ahlrS"
 alias llld="lsd -ahlrS"
 alias lower="find . -depth -exec prename 'y/A-Z/a-z/' {} \;"
-alias mem="echo Available memory: $(free -h | grep Mem | awk '{print $7}')"
 alias mnt="findmnt"
 alias myhtop="htop -u $USER"
 alias mytop="top -u $USER"
@@ -208,3 +207,13 @@ alias mesh="~/$GIT_REPOS_DIR/SU2_functionalUtilities/mesh.jl"
 # ===========================================================
 # Not escaped version: perl -e 'rename$_,y/ /_/drfor<"* *">'
 alias adjust_filenames="perl -e 'rename\$_,y/ /_/drfor<\"* *\">'"
+
+# ===================================
+# ====== OS-DEPENDANT ALIASES  ======
+# ===================================
+
+if on-linux ; then
+    alias mem="echo Available memory: $(free -h | grep Mem | awk '{print $7}')"
+elif on-macos ; then
+    alias mem="echo Available memory: $(vm_stat | grep 'Pages free' | awk '{print $3}')"
+fi
