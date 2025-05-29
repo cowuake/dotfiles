@@ -14,6 +14,6 @@ So there's a chance that you'll find there that particular alias, function or ge
 
 ## Installation
 
-At the present time there is a little script (`.config_bootstrap.sh`) for ``installing'' the files in the current user's `$HOME`.
+At the present time there is a little script (`linux_config_bootstrap.sh`) for ``installing'' the files in the current user's `$HOME` (in GNU/Linux).
 Nevertheless, I made that script simply for copying the files on some remote machines that made difficult to adopt a more sophisticated strategy (don't ask).
 A proper installer which can also deal with backup of the previous configuration and manage some sort of snapshot mechanism could be eventually implemented, but it's not a priority as of today.
