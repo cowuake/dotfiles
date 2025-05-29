@@ -56,12 +56,24 @@ if [ -f ~/.Xresources ] ; then
 fi
 
 SHELL_DIR=~/.shell
-. $SHELL_DIR/{common,bash}/session/*.sh
-. $SHELL_DIR/{common,bash}/os/*.sh
-. $SHELL_DIR/{common,bash}/environment/*.sh
-. $SHELL_DIR/{common,bash}/functions/*.sh
-. $SHELL_DIR/{common,bash}/aliases/*.sh
-. $SHELL_DIR/{common,bash}/auto/*.sh
+for BRANCH in common bash; do
+    ALIAS_DIRS=(
+        "$SHELL_DIR/$BRANCH/session"
+        "$SHELL_DIR/$BRANCH/os"
+        "$SHELL_DIR/$BRANCH/environment"
+        "$SHELL_DIR/$BRANCH/functions"
+        "$SHELL_DIR/$BRANCH/aliases"
+        "$SHELL_DIR/$BRANCH/auto"
+    )
+
+    for ALIAS_DIR in "${ALIAS_DIRS[@]}"; do
+        for ALIAS_FILE in $ALIAS_DIR/*.sh; do
+            if [ -f $ALIAS_FILE ]; then
+                . $ALIAS_FILE
+            fi
+        done
+    done
+done
 
 
 # =====================
