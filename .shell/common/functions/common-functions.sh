@@ -24,6 +24,15 @@ function random-files() {
     done
 }
 
+function backup() {
+    BACKUP_BASE_DIR=~/backup
+    SOURCE=$1
+    TARGET=$BACKUP_BASE_DIR/$(basename $SOURCE).bak
+
+    mkdir -p $BACKUP_BASE_DIR
+    cp $SOURCE $TARGET
+}
+
 # ============================
 # ====== PDF Facilities ======
 # ============================
